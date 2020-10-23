@@ -5,7 +5,7 @@
 import Foundation
 
 public enum HTTPClientResult {
-    case success(HTTPURLResponse)
+    case success(Data, HTTPURLResponse)
     case failure(Error)
 }
 
@@ -21,6 +21,7 @@ public final class RemoteFeedLoader {
         case connectivity
         case invalidData
     }
+    
     public init(url: URL, client: HTTPClient) {
         self.url = url
         self.client = client
