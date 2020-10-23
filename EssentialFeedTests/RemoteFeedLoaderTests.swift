@@ -37,7 +37,7 @@ class RemoteFeedLoaderTests: XCTestCase {
         let clientError = NSError(domain: #file, code: 0)
         
         sut.load { remoteFeedLoaderErrors.append($0) }
-        client.completions[0](clientError)
+        client.complete(with: clientError)
         
         XCTAssertEqual(remoteFeedLoaderErrors, [.connectivity])
         
@@ -51,12 +51,17 @@ class RemoteFeedLoaderTests: XCTestCase {
     }
     
     private class HTTPClientSpy: HTTPClient {
-        var requestURL = [URL]()
-        var completions = [(Error) -> Void]()
+        private var messages = [(url: URL, completion: (Error) -> Void)]()
+        var requestURL: [URL] {
+            return messages.map { $0.url }
+        }
         
         func get(from url: URL, completion: @escaping (Error) -> Void) {
-            completions.append(completion)
-            requestURL.append(url)
+            messages.append((url, completion))
+        }
+        
+        func complete(with error: Error, at index: Int = 0) {
+            messages[index].completion(error)
         }
     }
 }
