@@ -42,11 +42,12 @@ class RemoteFeedLoaderTests: XCTestCase {
     
     func test_load_delivers_error_on_non_200_http_response() {
         let (sut, client) = makeSUT()
-        let sample = [199, 200, 300, 400, 500]
+        let sample = [199, 201, 300, 400, 500]
         
         sample.enumerated().forEach { (index, code) in
             expect(sut, toCompleteWith: .failure(.invalidData), when: {
-                client.complete(with: code, at: index)
+                let data = serialize([])
+                client.complete(with: code, data: data, at: index)
             })
         }
     }
@@ -137,7 +138,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             messages[index].completion(.failure(error))
         }
         
-        func complete(with statusCode: Int, data: Data = Data(), at index: Int = 0) {
+        func complete(with statusCode: Int, data: Data, at index: Int = 0) {
             let response = HTTPURLResponse(url: requestURL[index], statusCode: statusCode, httpVersion: nil, headerFields: nil)!
             messages[index].completion(.success(data, response))
         }
