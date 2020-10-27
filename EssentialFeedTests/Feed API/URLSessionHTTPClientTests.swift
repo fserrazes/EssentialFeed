@@ -13,10 +13,14 @@ class URLSessionHTTPClient {
         self.session = session
     }
     
+    struct UnexpectedValuesRepresentation: Error {}
+    
     func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
         session.dataTask(with: url) {_, _, error in
             if let error = error {
                 completion(.failure(error))
+            } else {
+                completion(.failure(UnexpectedValuesRepresentation()))
             }
         }.resume()
     }
@@ -35,7 +39,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_get_from_url_performs_get_request_with_url() {
-        let url = ANY_URL
+        let url = anyURL()
         let exp = expectation(description: "Wait for request")
         URLProtocolStub.requestObserver { request in
             XCTAssertEqual(request.url, url)
@@ -54,7 +58,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         URLProtocolStub.stub(data: nil, response: nil, error: error)
         
         let exp = expectation(description: "Wait for load completion")
-        makeSUT().get(from: ANY_URL) { result in
+        makeSUT().get(from: anyURL()) { result in
             switch result {
                 case let .failure(receivedError as NSError):
                     XCTAssertEqual(receivedError, error)
@@ -66,7 +70,21 @@ class URLSessionHTTPClientTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    
+    func test_get_from_url_fails_on_all_nil_values() {
+        URLProtocolStub.stub(data: nil, response: nil, error: nil)
+        
+        let exp = expectation(description: "Wait for load completion")
+        makeSUT().get(from: anyURL()) { result in
+            switch result {
+                case .failure:
+                    break
+                default:
+                    XCTFail("Expected failure with, got \(result) instead")
+            }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
     
     //MARK: - Helpers
     
@@ -76,7 +94,9 @@ class URLSessionHTTPClientTests: XCTestCase {
         return sut
     }
     
-    private static var ANY_URL: URL { URL(string: "http://given-url.com")! }
+    private func anyURL() -> URL {
+        return URL(string: "http://given-url.com")!
+    }
     
     private class URLProtocolStub: URLProtocol {
         private static var stub: Stub?
