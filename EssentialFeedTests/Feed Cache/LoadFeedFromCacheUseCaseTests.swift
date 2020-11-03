@@ -22,11 +22,25 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     
     func test_fails_on_cache_retrival_error() {
         let (sut, store) = makeSUT()
-        let receivedError = anyNSError()
+        let retrivalError = anyNSError()
+        let exp = expectation(description: "Wait for load completion")
+
+        var receivedError: Error?
+        sut.load { result in
+            switch result {
+                case let .failure(error):
+                    receivedError = error
+                default:
+                    XCTFail("Expected failure, got \(result) instead")
+            }
+            exp.fulfill()
+        }
         
-        expect(sut, toCompleteWithError: receivedError, when: {
-            store.completeRetrieval(with: receivedError)
-        })
+        store.completeRetrieval(with: retrivalError)
+        
+        wait(for: [exp], timeout: 1.0)
+        
+        XCTAssertEqual(receivedError as NSError?, retrivalError)
     }
     
     //MARK: - Helper
@@ -41,22 +55,22 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         return (sut, store)
     }
     
-    private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void,
-                        file: StaticString = #filePath, line: UInt = #line) {
-        let exp = expectation(description: "Wait for load completion")
-        var receivedError: Error?
-
-        sut.load() { error in
-            receivedError = error
-            exp.fulfill()
-        }
-        
-        action()
-        
-        wait(for: [exp], timeout: 1.0)
-        
-        XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
-    }
+//    private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void,
+//                        file: StaticString = #filePath, line: UInt = #line) {
+//        let exp = expectation(description: "Wait for load completion")
+//        var receivedError: Error?
+//
+//        sut.load() { error in
+//            receivedError = error as! Error
+//            exp.fulfill()
+//        }
+//
+//        action()
+//
+//        wait(for: [exp], timeout: 1.0)
+//
+//        XCTAssertEqual(receivedError as NSError?, expectedError, file: file, line: line)
+//    }
     
     private func anyNSError() -> NSError {
         return NSError(domain: "any error", code: 0)
