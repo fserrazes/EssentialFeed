@@ -116,8 +116,8 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         return .failure(error)
     }
     
-    private func makeJsonItem(id: UUID, description: String? = nil, location: String? = nil , imageUrl: URL) -> (model: FeedItem, json: [String: Any]) {
-        let item = FeedItem(id: id, description: description, location: location, imageUrl: imageUrl)
+    private func makeJsonItem(id: UUID, description: String? = nil, location: String? = nil , imageUrl: URL) -> (model: FeedImage, json: [String: Any]) {
+        let item = FeedImage(id: id, description: description, location: location, url: imageUrl)
         
         let json = [
             "id": id.uuidString,
