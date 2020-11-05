@@ -72,7 +72,6 @@ And there’s a cached version of the feed
 #### No connectivity – error course (sad path):
 1. System delivers connectivity error.
 
-
 ### Load Feed From Cache Use Case
 
 #### Primary course:
@@ -83,16 +82,26 @@ And there’s a cached version of the feed
 5. System delivers image feed.
 
 #### Error course (sad path):
- 1. System deletes caches.
- 2. System delivers error.
+ 1. System delivers error.
  
 #### Expired cache course (sad path): 
-1. System deletes cache.
-2. System delivers no feed images.
+1. System delivers no feed images.
 
 #### Empty cache course (sad path): 
 1. System delivers no feed images.
 
+### Validate Feed Cache Use Case
+
+#### Primary course:
+1. Execute "Validate Cache" command with above data..
+2. System retrieves feed data from cache.
+3. System validates cache is less than seven days old.
+
+#### Error course (sad path):
+ 1. System deletes caches.
+ 
+#### Expired cache course (sad path): 
+1. System deletes cache.
 
 ### Cache Feed Use Case
 
