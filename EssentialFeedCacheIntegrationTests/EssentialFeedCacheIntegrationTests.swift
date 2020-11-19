@@ -30,12 +30,7 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         let sutToPerformLoad = makeSUT()
         let feed = uniqueImageFeed().models
         
-        let saveExpectation = expectation(description: "Wait for save completion")
-        sutToPerformSave.save(feed) { saveError in
-            XCTAssertNil(saveError, "Expected to save feed suceessfuly")
-            saveExpectation.fulfill()
-        }
-        wait(for: [saveExpectation], timeout: 1.0)
+        save(feed, with: sutToPerformSave)
         
         expect(sutToPerformLoad, toLoad: feed)
     }
@@ -47,19 +42,8 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         let firstFeed = uniqueImageFeed().models
         let lastestFeed = uniqueImageFeed().models
         
-        let saveExp1 = expectation(description: "Wait for save completion")
-        sutToPerformFirstSave.save(firstFeed) { saveError in
-            XCTAssertNil(saveError, "Expected to save feed suceessfuly")
-            saveExp1.fulfill()
-        }
-        wait(for: [saveExp1], timeout: 1.0)
-        
-        let saveExp2 = expectation(description: "Wait for save completion")
-        sutToPerformLastSave.save(lastestFeed) { saveError in
-            XCTAssertNil(saveError, "Expected to save feed suceessfuly")
-            saveExp2.fulfill()
-        }
-        wait(for: [saveExp2], timeout: 1.0)
+        save(firstFeed, with: sutToPerformFirstSave)
+        save(lastestFeed, with: sutToPerformLastSave)
         
         expect(sutToPerformLoad, toLoad: lastestFeed)
         
@@ -93,6 +77,14 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
+    private func save(_ feed:[FeedImage], with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
+        let saveExp = expectation(description: "Wait for save completion")
+        loader.save(feed) { saveError in
+            XCTAssertNil(saveError, "Expected to save feed suceessfuly", file: file, line: line)
+            saveExp.fulfill()
+        }
+        wait(for: [saveExp], timeout: 1.0)
+    }
     
     private func testSpecificStoreURL() -> URL {
         return cachesDirectory().appendingPathComponent("\(type(of: self)).store")
