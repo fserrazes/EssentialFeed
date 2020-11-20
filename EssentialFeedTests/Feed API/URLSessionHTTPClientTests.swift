@@ -34,10 +34,10 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_get_from_url_fails_on_requests_error() {
-//        let requestError = anyNSError()
-//        let receivedError = resultErrorFor(data: nil, response: nil, error: requestError)
-//
-//        XCTAssertEqual(receivedError as NSError?, requestError)
+        let requestError = anyNSError()
+        let receivedError = resultErrorFor(data: nil, response: nil, error: requestError) as NSError?
+        
+        XCTAssertEqual(receivedError?.code, requestError.code)
     }
     
     func test_get_from_url_fails_on_all_invalid_representation_cases() {
@@ -168,6 +168,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         }
         
         override class func canInit(with request: URLRequest) -> Bool {
+            requestObserver?(request)
             return true
         }
         
