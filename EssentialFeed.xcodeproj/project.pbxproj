@@ -336,8 +336,8 @@
 		0D5A9C6F257684680046DD10 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0D5A9BBF2570E96C0046DD10 /* FeedViewControllerTests.swift */,
 				0D5A9C812576858A0046DD10 /* Helpers */,
+				0D5A9BBF2570E96C0046DD10 /* FeedViewControllerTests.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
