@@ -70,6 +70,14 @@ final class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [image0])
     }
     
+    func test_errorView_doesNotRenderErrorOnLoad() {
+        let (sut, _) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        
+        XCTAssertEqual(sut.errorMessage, nil)
+    }
+    
     func test_feedImageView_loads_image_url_when_visible() {
         let image0 = makeImage(url: URL(string: "http://given-any-url.com")!)
         let image1 = makeImage(url: URL(string: "http://given-another-url.com")!)
