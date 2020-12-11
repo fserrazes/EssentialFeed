@@ -35,6 +35,7 @@
                             </constraints>
                             <connections>
                                 <outlet property="label" destination="3z1-3D-vij" id="fx2-BO-K05"/>
+                                <outletCollection property="gestureRecognizers" destination="0g4-cS-yXY" appends="YES" id="Cog-2V-IYL"/>
                             </connections>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="sMg-TN-jsB">
@@ -44,7 +45,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="580" id="488-gy-ZcR" customClass="FeedImageCell" customModule="EssentialFeediOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="62" width="414" height="580"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="580"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="488-gy-ZcR" id="upq-f4-qe4">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="580"/>
@@ -165,6 +166,11 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wk4-Q3-jzY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="0g4-cS-yXY">
+                    <connections>
+                        <action selector="hideMessageAnimated" destination="Gwj-ca-c6h" id="QVv-SQ-WZD"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="884.05797101449286" y="67.633928571428569"/>
         </scene>
