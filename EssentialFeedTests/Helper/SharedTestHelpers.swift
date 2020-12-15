@@ -1,7 +1,4 @@
 //
-//  SharedTestHelpers.swift
-//  EssentialFeedTests
-//
 //  Created by Flavio Serrazes on 05.11.20.
 //
 
@@ -13,4 +10,8 @@ func anyNSError() -> NSError {
 
 func anyURL() -> URL {
     return URL(string: "http://given-url.com")!
+}
+
+func anyData() -> Data {
+    return Data("any data".utf8)
 }
