@@ -18,7 +18,6 @@
 		0D3036DC25667A97001ECF00 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D78EDEB254815D600EEFAD7 /* XCTestCase+MemoryLeakTracking.swift */; };
 		0D3036E125669E5D001ECF00 /* FeedCacheTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D77235D2553FB470018245E /* FeedCacheTestHelpers.swift */; };
 		0D3036E625669E78001ECF00 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7723622553FCBD0018245E /* SharedTestHelpers.swift */; };
-		0D5A9BC02570E96C0046DD10 /* FeedUIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5A9BBF2570E96C0046DD10 /* FeedUIIntegrationTests.swift */; };
 		0D5A9BC8257134240046DD10 /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D78ED8D254196D900EEFAD7 /* EssentialFeed.framework */; };
 		0D5A9BC9257134240046DD10 /* EssentialFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0D78ED8D254196D900EEFAD7 /* EssentialFeed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0D5A9BD2257136240046DD10 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D78EDEB254815D600EEFAD7 /* XCTestCase+MemoryLeakTracking.swift */; };
@@ -152,7 +151,6 @@
 		0D3036CD256675F8001ECF00 /* EssentialFeedCacheIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedCacheIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0D3036CF256675F8001ECF00 /* EssentialFeedCacheIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedCacheIntegrationTests.swift; sourceTree = "<group>"; };
 		0D3036D1256675F8001ECF00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0D5A9BBF2570E96C0046DD10 /* FeedUIIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FeedUIIntegrationTests.swift; path = ../../EssentialApp/EssentialAppTests/FeedUIIntegrationTests.swift; sourceTree = "<group>"; };
 		0D5A9BD825721F0A0046DD10 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		0D5A9BE4257520270046DD10 /* FeedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCell.swift; sourceTree = "<group>"; };
 		0D5A9BF0257590420046DD10 /* UIView+Shimmering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shimmering.swift"; sourceTree = "<group>"; };
@@ -348,14 +346,6 @@
 			path = "Views ";
 			sourceTree = "<group>";
 		};
-		0D5A9C6F257684680046DD10 /* Feed UI */ = {
-			isa = PBXGroup;
-			children = (
-				0D5A9BBF2570E96C0046DD10 /* FeedUIIntegrationTests.swift */,
-			);
-			path = "Feed UI";
-			sourceTree = "<group>";
-		};
 		0D5EF15A258425090023529E /* Feed Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -534,7 +524,6 @@
 			isa = PBXGroup;
 			children = (
 				0DC084262570CFBB0057BFFF /* Info.plist */,
-				0D5A9C6F257684680046DD10 /* Feed UI */,
 			);
 			path = EssentialFeediOSTests;
 			sourceTree = "<group>";
@@ -929,7 +918,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D5A9BC02570E96C0046DD10 /* FeedUIIntegrationTests.swift in Sources */,
 				0D5A9BD2257136240046DD10 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
