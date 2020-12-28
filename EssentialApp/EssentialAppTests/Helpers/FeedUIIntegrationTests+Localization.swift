@@ -2,9 +2,9 @@
 //  Created by Flavio Serrazes on 07.12.20.
 //
 
-import Foundation
 import XCTest
 import EssentialFeed
+import EssentialFeediOS
 
 extension FeedUIIntegrationTests {
     func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
