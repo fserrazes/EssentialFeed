@@ -39,6 +39,7 @@
 		0DFAA0F4259A71D500EC54BE /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAA0F3259A71D500EC54BE /* HTTPClientStub.swift */; };
 		0DFAA0F7259A72AC00EC54BE /* InMemoryFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAA0F6259A72AC00EC54BE /* InMemoryFeedStore.swift */; };
 		0DFAA130259D22F700EC54BE /* UIView+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAA12F259D22F700EC54BE /* UIView+TestHelpers.swift */; };
+		0DFAA15A25A286F200EC54BE /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFAA15925A286F200EC54BE /* CombineHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		0DFAA0F3259A71D500EC54BE /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
 		0DFAA0F6259A72AC00EC54BE /* InMemoryFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryFeedStore.swift; sourceTree = "<group>"; };
 		0DFAA12F259D22F700EC54BE /* UIView+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+TestHelpers.swift"; sourceTree = "<group>"; };
+		0DFAA15925A286F200EC54BE /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 			children = (
 				0DB21DC9258C207D00917693 /* AppDelegate.swift */,
 				0DB21DCB258C207D00917693 /* SceneDelegate.swift */,
+				0DFAA15925A286F200EC54BE /* CombineHelpers.swift */,
 				0DFAA094259A151B00EC54BE /* FeedUIComposer.swift */,
 				0DFAA097259A151B00EC54BE /* WeakRefVirtualProxy.swift */,
 				0DFAA095259A151B00EC54BE /* FeedImageDataLoaderPresentationAdapter.swift */,
@@ -310,6 +313,7 @@
 				0DFAA09C259A151B00EC54BE /* FeedViewAdapter.swift in Sources */,
 				0DFAA09D259A151B00EC54BE /* FeedLoaderPresentationAdapter.swift in Sources */,
 				0DB21DCC258C207D00917693 /* SceneDelegate.swift in Sources */,
+				0DFAA15A25A286F200EC54BE /* CombineHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
