@@ -7,16 +7,16 @@ import EssentialFeed
 
 class LoadResourcePresenterTests: XCTestCase {
     
-    func test_init_does_not_send_messages_to_view() {
+    func test_init_doesNotSendMessagesToView() {
         let (_ , view) = makeSUT()
         
         XCTAssertTrue(view.messages.isEmpty, "Expected no view messages")
     }
     
-    func test_didStartLoadingFeed_displays_no_error_message_and_starts_loading() {
+    func test_didStartLoading_displaysNoErrorMessageAndStartsLoading() {
         let (sut, view) = makeSUT()
         
-        sut.didStartLoadingFeed()
+        sut.didStartLoading()
         
         XCTAssertEqual(view.messages, [
             .display(errorMessage: .none),
@@ -24,7 +24,7 @@ class LoadResourcePresenterTests: XCTestCase {
         ])
     }
     
-    func test_didFinishLoadingFeedWithError_displays_localised_error_message_and_stop_loading() {
+    func test_didFinishLoadingFeedWithError_displaysLocalizedErrorMessageAndStopsLoading() {
         let (sut, view) = makeSUT()
         
         sut.didFinishLoadingFeed(with: anyNSError())
@@ -35,7 +35,7 @@ class LoadResourcePresenterTests: XCTestCase {
         ])
     }
     
-    func test_didFinishLoadingFeed_displays_feed_and_stop_loading() {
+    func test_didFinishLoadingFeed_displaysFeedAndStopsLoading() {
         let (sut, view) = makeSUT()
         let feed = uniqueImageFeed().models
         
