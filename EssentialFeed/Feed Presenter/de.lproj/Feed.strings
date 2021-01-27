@@ -3,4 +3,4 @@
 */
 
 "FEED_VIEW_TITLE" = "Mein Feed";
-"FEED_VIEW_CONNECTION_ERROR" = "Verbindung zum Server fehlgeschlagen";
+"GENERIC_CONNECTION_ERROR" = "Verbindung zum Server fehlgeschlagen";
