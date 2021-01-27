@@ -6,10 +6,6 @@ import XCTest
 import EssentialFeed
 
 class LoadResourcePresenterTests: XCTestCase {
-
-    func test_title_is_localized() {
-        XCTAssertEqual(LoadResourcePresenter.title, localized("FEED_VIEW_TITLE"))
-    }
     
     func test_init_does_not_send_messages_to_view() {
         let (_ , view) = makeSUT()
