@@ -1,0 +1,5 @@
+/*
+    Created by Flavio Serrazes on 28.01.21.
+*/
+
+"GENERIC_CONNECTION_ERROR" = "Couldn't connect to server";
