@@ -5,7 +5,7 @@
 import XCTest
 import EssentialFeed
 
-class FeedPresentationTests: XCTestCase {
+class FeedPresenterTests: XCTestCase {
     
     func test_title_is_localized() {
         XCTAssertEqual(FeedPresenter.title, localized("FEED_VIEW_TITLE"))
