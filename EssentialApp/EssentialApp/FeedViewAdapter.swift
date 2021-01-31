@@ -19,7 +19,7 @@ final class FeedViewAdapter: ResourceView {
     
     func display(_ viewModel: FeedViewModel) {
         controller?.display(viewModel.feed.map { model in
-            let adapter = LoadResourcePresentationAdapter(loader: { [imageLoader] in imageLoader(model.url) })
+            let adapter = ImageDataPresentationAdapter(loader: { [imageLoader] in imageLoader(model.url) })
             
             let view = FeedImageCellController(
                 viewModel: FeedImagePresenter.map(model),
