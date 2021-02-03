@@ -10,7 +10,14 @@ import EssentialFeediOS
 
 final class FeedUIIntegrationTests: XCTestCase {
     
-    func test_loadFeedActions_requests_feed_from_loader() {
+    func test_feedView_hasTitle() {
+        let (sut, _) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        XCTAssertEqual(sut.title, feedTitle)
+    }
+         
+    func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
         XCTAssertEqual(loader.loadFeedCallCount, 0, "Expected no loading requests before view is loaded")
         
@@ -24,7 +31,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.loadFeedCallCount, 3, "Expected yet another loading request once user initiates another reload")
     }
     
-    func test_loadingFeedIndicator_is_visible_while_loading_feed() {
+    func test_loadingFeedIndicator_isVisibleWhileLoadingFeed() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -40,7 +47,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading is completes with error ")
     }
     
-    func test_loadFeedCompletion_render_successfully_loaded_feed() {
+    func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {
         let image0 = makeImage(description: "a description", location: "a location")
         let image1 = makeImage(description: "nil", location: "another location")
         let image2 = makeImage(description: "another description", location: nil)
@@ -58,7 +65,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [image0, image1, image2, image3])
     }
     
-    func test_loadFeedCompletion_render_successfully_loaded_empty_feed_after_non_empty_feed() {
+    func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
         let image0 = makeImage()
         let image1 = makeImage()
         let (sut, loader) = makeSUT()
@@ -72,7 +79,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [])
     }
     
-    func test_loadFeedCompletion_does_not_alter_current_rendering_state_on_error() {
+    func test_loadFeedCompletion_doesNotAlterCurrentRenderingStateOnError() {
         let image0 = makeImage()
         let (sut, loader) = makeSUT()
         
@@ -85,7 +92,19 @@ final class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [image0])
     }
     
-    func test_loadFeedCompletion_renders_error_message_on_error_until_next_reload() {
+    func test_loadFeedCompletion_dispatchesFromBackgroundToMainThread() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        let exp = expectation(description: "Wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeFeedLoading(at: 0)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -113,7 +132,9 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.errorMessage, nil)
     }
     
-    func test_feedImageView_loads_image_url_when_visible() {
+    // MARK: - Image View Tests
+    
+    func test_feedImageView_loadsImageURLWhenVisible() {
         let image0 = makeImage(url: URL(string: "http://given-any-url.com")!)
         let image1 = makeImage(url: URL(string: "http://given-another-url.com")!)
         let (sut, loader) = makeSUT()
@@ -129,7 +150,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url], "Expected second image URL resquest once second view become visible")
     }
     
-    func test_feedImageView_cancels_image_loading_when_not_visible_anymore() {
+    func test_feedImageView_cancelsImageLoadingWhenNotVisibleAnymore() {
         let image0 = makeImage(url: URL(string: "http://given-any-url.com")!)
         let image1 = makeImage(url: URL(string: "http://given-another-url.com")!)
         let (sut, loader) = makeSUT()
@@ -145,7 +166,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected two cancelled image URL resquest once second image is not visible")
     }
     
-    func test_feedImageViewLoadingIndicator_is_visible_while_loading_image() {
+    func test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -165,7 +186,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(view1?.isShowingImageLoadingIndicator, false, "Expected no loading indicator for second view once second image loading completes with error")
     }
     
-    func test_feedImageView_renders_image_loaded_from_url() {
+    func test_feedImageView_rendersImageLoadedFromURL() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -187,7 +208,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(view1?.renderedImage, imageData1, "Expected image for second view once second image loading completes successfully")
     }
     
-    func test_feedImageViewRetryButton_is_visible_on_image_url_load_error() {
+    func test_feedImageViewRetryButton_isVisibleOnImageURLLoadError() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -208,7 +229,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(view1?.isShowingRetryAction, true, "Expected retry action for second view once second image loading completes with error")
     }
     
-    func test_feedImageViewRetryButton_is_visible_on_invalid_image_data() {
+    func test_feedImageViewRetryButton_isVisibleOnInvalidImageData() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -222,7 +243,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(view?.isShowingRetryAction, true, "Expected retry action once image loading completes with invalid image data")
     }
     
-    func test_feedImageViewRetryAction_retries_image_load() {
+    func test_feedImageViewRetryAction_retriesImageLoad() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (sut, loader) = makeSUT()
@@ -245,7 +266,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.loadedImageURLs, [image0.url, image1.url, image0.url, image1.url], "Expected fourth imageURL request after second view retry action")
     }
     
-    func test_feedImageView_preloads_image_url_when_near_visible() {
+    func test_feedImageView_preloadsImageURLWhenNearVisible() {
         let image0 = makeImage(url: URL(string: "http://url-0.com")!)
         let image1 = makeImage(url: URL(string: "http://url-1.com")!)
         let (sut, loader) = makeSUT()
@@ -277,7 +298,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected second cancelled image URL request once second image is not near visible anymore")
     }
     
-    func test_feedImageView_does_not_render_loaded_image_when_not_visible_anymore() {
+    func test_feedImageView_doesNotRenderLoadedImageWhenNotVisibleAnymore() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         loader.completeFeedLoading(with: [makeImage()])
@@ -288,26 +309,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(view?.renderedImage, "Expected no rendered image when an image load finishes after the view is not visible anymore")
     }
     
-    func test_feedView_has_title() {
-        let (sut, _) = makeSUT()
-        sut.loadViewIfNeeded()
-        
-        XCTAssertEqual(sut.title, feedTitle)
-    }
-    
-    func test_loadFeedCompletion_dispatches_from_banckground_to_main_thread() {
-        let (sut, loader) = makeSUT()
-        sut.loadViewIfNeeded()
-        
-        let exp = expectation(description: "Wait for background queue")
-        DispatchQueue.global().async {
-            loader.completeFeedLoading(at: 0)
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
-    }
-    
-    func test_loadImageDataCompletion_dispatches_from_banckground_to_main_thread() {
+    func test_loadImageDataCompletion_dispatchesFromBackgroundToMainThread() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
