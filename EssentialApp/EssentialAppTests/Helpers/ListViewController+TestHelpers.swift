@@ -19,6 +19,19 @@ extension ListViewController {
         return refreshControl?.isRefreshing == true
     }
     
+    func numberOfRows(in section: Int) -> Int {
+        tableView.numberOfSections > section ? tableView.numberOfRows(inSection: section) : 0
+    }
+    
+    func cell(row: Int, section: Int) -> UITableViewCell? {
+        guard numberOfRows(in: section) > row else {
+            return nil
+        }
+        let ds = tableView.dataSource
+        let index = IndexPath(row: row, section: section)
+        return ds?.tableView(tableView, cellForRowAt: index)
+    }
+    
     func simulateErrorViewTap() {
         errorView.simulateTap()
     }
@@ -65,17 +78,11 @@ extension ListViewController {
     }
     
     func numberOfRenderedFeedImageViews() -> Int {
-        return tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: feedImageSection)
+        return numberOfRows(in: feedImageSection)
     }
     
     func feedImageView(at row: Int) -> UITableViewCell? {
-        guard numberOfRenderedFeedImageViews() > row else {
-            return nil
-        }
-        
-        let ds = tableView.dataSource
-        let index = IndexPath(row: row, section: feedImageSection)
-        return ds?.tableView(tableView, cellForRowAt: index)
+        return cell(row: row, section: feedImageSection)
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
@@ -89,7 +96,7 @@ extension ListViewController {
 
 extension ListViewController {
     func numberOfRenderedCommmentsViews() -> Int {
-        return tableView.numberOfSections == 0 ? 0 : tableView.numberOfRows(inSection: commentsSection)
+        return numberOfRows(in: commentsSection)
     }
     
     private var commentsSection: Int {
@@ -97,13 +104,7 @@ extension ListViewController {
     }
     
     private func commentView(at row: Int) -> ImageCommentCell? {
-        guard numberOfRenderedCommmentsViews() > row else {
-            return nil
-        }
-        
-        let ds = tableView.dataSource
-        let index = IndexPath(row: row, section: commentsSection)
-        return ds?.tableView(tableView, cellForRowAt: index) as? ImageCommentCell
+        return cell(row: row, section: commentsSection) as? ImageCommentCell
     }
     
     func commentMessage(at row: Int) -> String? {
