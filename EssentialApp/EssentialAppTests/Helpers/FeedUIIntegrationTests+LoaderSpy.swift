@@ -33,7 +33,7 @@ class LoaderSpy: FeedImageDataLoader {
         feedRequests[index].send(completion: .failure(error))
     }
     
-    // MARK - FeedImageDataLoader
+    // MARK: - FeedImageDataLoader
     
     private struct TaskSpy: FeedImageDataLoaderTask {
         let cancelCallback: () -> Void
