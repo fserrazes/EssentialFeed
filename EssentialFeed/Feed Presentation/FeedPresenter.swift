@@ -9,9 +9,5 @@ public final class FeedPresenter {
         let bundle = Bundle(for: FeedPresenter.self)
         return NSLocalizedString("FEED_VIEW_TITLE", tableName: "Feed", bundle: bundle, comment: "Title for the feed view")
     }
-    
-    public static func map(_ feed: [FeedImage]) -> FeedViewModel {
-        return FeedViewModel(feed: feed)
-    }
 }
 
