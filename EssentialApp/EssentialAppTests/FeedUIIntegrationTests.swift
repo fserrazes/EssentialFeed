@@ -17,7 +17,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.title, feedTitle)
     }
     
-    func test_imageSelection_notifiesHandler() {
+func test_imageSelection_notifiesHandler() {
         let image0 = makeImage()
         let image1 = makeImage()
         var selectedImages = [FeedImage]()
@@ -45,6 +45,17 @@ class FeedUIIntegrationTests: XCTestCase {
         
         sut.simulateUserInitiatedReload()
         XCTAssertEqual(loader.loadFeedCallCount, 3, "Expected yet another loading request once user initiates another reload")
+    }
+    
+    func test_loadMoreActions_requestMoreFromLoader() {
+        let (sut, loader) = makeSUT()
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading()
+        
+        XCTAssertEqual(loader.loadMoreCallCount, 0, "Expected no requests until load more action")
+        
+        sut.simulateLoadMoreFeedAction()
+        XCTAssertEqual(loader.loadMoreCallCount, 1, "Expected a load more request")
     }
     
     func test_loadingFeedIndicator_isVisibleWhileLoadingFeed() {
