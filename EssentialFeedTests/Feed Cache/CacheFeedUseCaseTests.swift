@@ -7,41 +7,33 @@ import EssentialFeed
 
 class CacheFeedUseCaseTests: XCTestCase {
 
-    func test_does_not_message_store_upon_creation() {
+    func test_init_doesNotMessageStoreUponCreation() {
         let (_ , store) = makeSUT()
         XCTAssertEqual(store.receivedMessages, [])
     }
     
-    func test_save_requests_cache_deletion() {
-        let (sut, store) = makeSUT()
-        
-        sut.save(uniqueImageFeed().models) { _ in }
-        
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
-    }
-    
-    func test_does_not_request_cache_insertion_on_deletion_error() {
+    func test_save_doesNotRequestCacheInsertionOnDeletionError() {
         let (sut, store) = makeSUT()
         let deletionError = anyNSError()
         
-        sut.save(uniqueImageFeed().models) { _ in }
         store.completeDeletion(with: deletionError)
+        sut.save(uniqueImageFeed().models) { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
     }
     
-    func test_save_request_new_cache_insertion_with_timestamp_on_deletion_successful() {
+    func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
         let timestamp = Date()
         let feed = uniqueImageFeed()
         let (sut, store) = makeSUT(currentDate: { timestamp })
         
-        sut.save(feed.models) { _ in }
         store.completeDeletionSuccessfully()
+        sut.save(feed.models) { _ in }
         
         XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(feed.local, timestamp)])
     }
     
-    func test_fails_on_deletion_error() {
+    func test_save_failsOnDeletionError() {
         let (sut, store) = makeSUT()
         let deletionError = anyNSError()
         
@@ -50,7 +42,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         })
     }
     
-    func test_fails_on_insertion_error() {
+    func test_save_failsOnInsertionError() {
         let (sut, store) = makeSUT()
         let insertionError = anyNSError()
         
@@ -60,40 +52,13 @@ class CacheFeedUseCaseTests: XCTestCase {
         })
     }
     
-    func test_save_succeds_on_successfull_cache_insertion() {
+    func test_save_succeedsOnSuccessfulCacheInsertion() {
         let (sut, store) = makeSUT()
         
         expect(sut, toCompleteWithError: nil, when: {
             store.completeDeletionSuccessfully()
             store.completeInsertionSuccefully()
         })
-    }
-    
-    func test_does_not_delivers_deletion_error_after_instance_has_been_deallocated() {
-        let store = FeedStoreSpy()
-        var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
-        
-        var receivedResults = [LocalFeedLoader.SaveResult]()
-        sut?.save(uniqueImageFeed().models, completion: { (receivedResults.append($0))})
-        
-        sut = nil
-        store.completeDeletion(with: anyNSError())
-        
-        XCTAssertTrue(receivedResults.isEmpty)
-    }
-    
-    func test_does_not_delivers_insertion_error_after_instance_has_been_deallocated() {
-        let store = FeedStoreSpy()
-        var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
-        
-        var receivedResults = [LocalFeedLoader.SaveResult]()
-        sut?.save(uniqueImageFeed().models, completion: { (receivedResults.append($0))})
-        
-        store.completeDeletionSuccessfully()
-        sut = nil
-        store.completeInsertion(with: anyNSError())
-        
-        XCTAssertTrue(receivedResults.isEmpty)
     }
     
     //MARK: - Helper
@@ -111,14 +76,13 @@ class CacheFeedUseCaseTests: XCTestCase {
     private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void,
                         file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Wait for save completion")
-        var receivedError: Error?
+        action()
 
+        var receivedError: Error?
         sut.save(uniqueImageFeed().models) { result in
             if case let Result.failure(error) = result { receivedError = error }
             exp.fulfill()
         }
-        
-        action()
         
         wait(for: [exp], timeout: 1.0)
         
