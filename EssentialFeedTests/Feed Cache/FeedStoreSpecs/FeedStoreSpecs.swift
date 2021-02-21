@@ -18,8 +18,6 @@ protocol FeedStoreSpecs {
     func test_delete_has_no_side_effects_on_empty_cache()
     func test_delete_delivers_no_error_on_non_empty_cache()
     func test_delete_empties_previously_inserted_cache()
-
-    func test_store_side_effects_run_serially()
 }
 
 protocol FailableRetrieveFeedStoreSpecs: FeedStoreSpecs {
