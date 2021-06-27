@@ -1,8 +1,35 @@
-# Essential Feed App – Image Feed Feature
+# Essential Feed iOS Application
 
+[![Swift 5.3](https://img.shields.io/badge/swift-5.3-green.svg?color=g&style=for-the-badge)](https://developer.apple.com/swift)
 [![Build Status](https://travis-ci.com/fserrazes/EssentialFeed.svg?branch=master)](https://travis-ci.com/fserrazes/EssentialFeed)
+![issues](https://img.shields.io/github/issues/fserrazes/EssentialFeed?color=blue&style=for-the-badge)
+[![GitHub forks](https://img.shields.io/github/forks/fserrazes/EssentialFeed?style=for-the-badge&color=blueviolet)](https://github.com/fserrazes/EssentialFeed/network)
 
-## BDD Specs
+## Architecture
+
+![EssentialFeed](./images/architecture_overview.png)
+
+### Business Logic (loaders)
+
+The `FeedLoader` protocol doesn't exists anymore, we reject dependencies. Now, our architecture for business logic looks like this:
+
+![Dependency Rejection](./images/dependency-rejection.png)
+
+### Presentation
+
+We are reusing the presentation for both `Feed` and `Image Comments`
+
+![Reusable Presentation](./images/reusable-presentation.png)
+
+## UI
+
+We are reusing the same table view to display the feed and comments
+
+![Reusable UI](./images/reusable-ui.png)
+
+## App Requirements
+
+## Behaviour Driven Development Specs (BDD)
 
 ### Story: Customer requests to see their image feed
 
@@ -49,7 +76,7 @@ And there’s a cached version of the feed
  Given the customer doesn't have connectivity
    And the cache is empty
   When the customer requests to see the feed
-  Then the app should display an error messagee
+  Then the app should display an error message
 ```
 
 ## Use Cases
@@ -91,7 +118,7 @@ And there’s a cached version of the feed
 
  #### No connectivity – error course (sad path):
  1. System delivers connectivity error.
- 
+
  ### Load Feed From Cache Use Case
 
 #### Primary course:
@@ -103,11 +130,11 @@ And there’s a cached version of the feed
 
 #### Error course (sad path):
  1. System delivers error.
- 
-#### Expired cache course (sad path): 
+
+#### Expired cache course (sad path):
 1. System delivers no feed images.
 
-#### Empty cache course (sad path): 
+#### Empty cache course (sad path):
 1. System delivers no feed images.
 
 ### Load Feed Image Data From Cache Use Case
@@ -128,7 +155,7 @@ And there’s a cached version of the feed
 
  #### Empty cache course (sad path):
  1. System delivers not found error.
- 
+
 ### Validate Feed Cache Use Case
 
 #### Primary course:
@@ -138,8 +165,8 @@ And there’s a cached version of the feed
 
 #### Error course (sad path):
  1. System deletes caches.
- 
-#### Expired cache course (sad path): 
+
+#### Expired cache course (sad path):
 1. System deletes cache.
 
 ### Cache Feed Use Case
@@ -163,11 +190,7 @@ And there’s a cached version of the feed
 
 ## Flowchart
 
-![Feed Loading Feature](feed_flowchart.png)
-
-## Architecture
-
-![Feed Loading Feature](feed_architecture.png)
+![Feed Loading Feature](./images/feed_flowchart.png)
 
 ## Model Specs
 
