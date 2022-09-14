@@ -17,7 +17,7 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.title, feedTitle)
     }
     
-func test_imageSelection_notifiesHandler() {
+    func test_imageSelection_notifiesHandler() {
         let image0 = makeImage()
         let image1 = makeImage()
         var selectedImages = [FeedImage]()
@@ -32,7 +32,7 @@ func test_imageSelection_notifiesHandler() {
         sut.simulateTapOnFeedImage(at: 1)
         XCTAssertEqual(selectedImages, [image0, image1])
     }
-         
+    
     func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
         XCTAssertEqual(loader.loadFeedCallCount, 0, "Expected no loading requests before view is loaded")
@@ -295,6 +295,27 @@ func test_imageSelection_notifiesHandler() {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.url, image1.url], "Expected two cancelled image URL resquest once second image is not visible")
     }
     
+    func test_feedImageView_configuresViewCorrectlyWhenTransitioningFromNearVisibleToVisibleWhileStillPreloadingImage() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [makeImage()])
+        
+        sut.simulateFeedImageViewNearVisible(at: 0)
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+        
+        XCTAssertEqual(view0?.renderedImage, nil, "Expected no rendered image when view becomes visible while still preloading image")
+        XCTAssertEqual(view0?.isShowingRetryAction, false, "Expected no retry action when view becomes visible while still preloading image")
+        XCTAssertEqual(view0?.isShowingImageLoadingIndicator, true, "Expected loading indicator when view becomes visible while still preloading image")
+        
+        let imageData = UIImage.make(withColor: .red).pngData()!
+        loader.completeImageLoading(with: imageData, at: 0)
+        
+        XCTAssertEqual(view0?.renderedImage, imageData, "Expected rendered image after image preloads successfully")
+        XCTAssertEqual(view0?.isShowingRetryAction, false, "Expected no retry action after image preloads successfully")
+        XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator after image preloads successfully")
+    }
+    
     func test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage() {
         let (sut, loader) = makeSUT()
         
@@ -458,17 +479,17 @@ func test_imageSelection_notifiesHandler() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
         loader.completeFeedLoading(with: [image])
-
+        
         sut.simulateFeedImageViewNearVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url], "Expected first request when near visible")
-
+        
         sut.simulateFeedImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url], "Expected no request until previous completes")
-
+        
         loader.completeImageLoading(at: 0)
         sut.simulateFeedImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url], "Expected second request when visible after previous complete")
-
+        
         sut.simulateFeedImageViewNotVisible(at: 0)
         sut.simulateFeedImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url, image.url], "Expected third request when visible after canceling previous complete")
@@ -482,7 +503,7 @@ func test_imageSelection_notifiesHandler() {
     // MARK: - Helpers
     
     private func makeSUT(selection: @escaping (FeedImage) -> Void = { _ in },
-        file: StaticString = #file, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
+                         file: StaticString = #file, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
         let sut = FeedUIComposer.feedComposedWith(
             feedLoader: loader.loadPublisher,
