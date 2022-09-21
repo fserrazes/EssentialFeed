@@ -48,10 +48,21 @@ extension ListViewController {
     }
     
     @discardableResult
+    func simulateFeedImageBecomingVisibleAgain(at row: Int) -> FeedImageCell? {
+        let view = simulateFeedImageViewNotVisible(at: row)
+        
+        let delegate = tableView.delegate
+        let index = IndexPath(row: row, section: feedImagesSection)
+        delegate?.tableView?(tableView, willDisplay: view!, forRowAt: index)
+        
+        return view
+    }
+    
+    @discardableResult
     func simulateFeedImageViewNotVisible(at row: Int) -> FeedImageCell? {
         let view = simulateFeedImageViewVisible(at: row)
         let delegate = tableView.delegate
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: index)
         
         return view
@@ -59,13 +70,13 @@ extension ListViewController {
     
     func simulateTapOnFeedImage(at row: Int) {
         let delegate = tableView.delegate
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         delegate?.tableView?(tableView, didSelectRowAt: index)
     }
     
     func simulateFeedImageViewNearVisible(at row: Int) {
         let ds = tableView.prefetchDataSource
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         ds?.tableView(tableView, prefetchRowsAt: [index])
     }
     
@@ -73,7 +84,7 @@ extension ListViewController {
         simulateFeedImageViewNearVisible(at: row)
         
         let ds = tableView.prefetchDataSource
-        let index = IndexPath(row: row, section: feedImageSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
     }
     
@@ -109,18 +120,18 @@ extension ListViewController {
     }
     
     func numberOfRenderedFeedImageViews() -> Int {
-        return numberOfRows(in: feedImageSection)
+        return numberOfRows(in: feedImagesSection)
     }
     
     func feedImageView(at row: Int) -> UITableViewCell? {
-        return cell(row: row, section: feedImageSection)
+        return cell(row: row, section: feedImagesSection)
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
         return simulateFeedImageViewVisible(at: index)?.renderedImage
     }
     
-    private var feedImageSection: Int { return 0 }
+    private var feedImagesSection: Int { return 0 }
     private var feedLoadMoreSection: Int { return 1 }
 }
 
