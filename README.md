@@ -1,33 +1,9 @@
 # Essential Feed iOS Application
 
-[![Swift 5.3](https://img.shields.io/badge/swift-5.3-green.svg?color=g&style=for-the-badge)](https://developer.apple.com/swift)
-[![Build Status](https://travis-ci.com/fserrazes/EssentialFeed.svg?branch=master)](https://travis-ci.com/fserrazes/EssentialFeed)
-![issues](https://img.shields.io/github/issues/fserrazes/EssentialFeed?color=blue&style=for-the-badge)
-[![GitHub forks](https://img.shields.io/github/forks/fserrazes/EssentialFeed?style=for-the-badge&color=blueviolet)](https://github.com/fserrazes/EssentialFeed/network)
+![iOS](https://img.shields.io/badge/iOS-15.0-orange.svg)
+![macOS](https://img.shields.io/badge/macOS-10.15+-orange.svg)
 
-## Architecture
-
-![EssentialFeed](./images/architecture_overview.png)
-
-### Business Logic (loaders)
-
-The `FeedLoader` protocol doesn't exists anymore, we reject dependencies. Now, our architecture for business logic looks like this:
-
-![Dependency Rejection](./images/dependency-rejection.png)
-
-### Presentation
-
-We are reusing the presentation for both `Feed` and `Image Comments`
-
-![Reusable Presentation](./images/reusable-presentation.png)
-
-## UI
-
-We are reusing the same table view to display the feed and comments
-
-![Reusable UI](./images/reusable-ui.png)
-
-## App Requirements
+## Requirements
 
 ## Behaviour Driven Development Specs (BDD)
 
@@ -79,6 +55,30 @@ And there’s a cached version of the feed
   Then the app should display an error message
 ```
 
+### Story: Customer requests to see image comments
+
+### Narrative
+
+```
+As an online customer
+I want the app to load image comments
+So I can see how people are engaging with images in my feed
+```
+
+#### Scenarios (Acceptance criteria)
+
+```
+Given the customer has connectivity
+ When the customer requests to see comments on an image
+ Then the app should display all comments for that image
+```
+
+```
+Given the customer doesn't have connectivity
+ When the customer requests to see comments on an image
+ Then the app should display an error message
+```
+
 ## Use Cases
 
 ### Load Feed From Remote Use Case
@@ -98,6 +98,8 @@ And there’s a cached version of the feed
 
 #### No connectivity – error course (sad path):
 1. System delivers connectivity error.
+
+---
 
 ### Load Feed Image Data From Remote Use Case
 
@@ -119,6 +121,8 @@ And there’s a cached version of the feed
  #### No connectivity – error course (sad path):
  1. System delivers connectivity error.
 
+---
+
  ### Load Feed From Cache Use Case
 
 #### Primary course:
@@ -136,6 +140,8 @@ And there’s a cached version of the feed
 
 #### Empty cache course (sad path):
 1. System delivers no feed images.
+
+---
 
 ### Load Feed Image Data From Cache Use Case
 
@@ -156,6 +162,8 @@ And there’s a cached version of the feed
  #### Empty cache course (sad path):
  1. System delivers not found error.
 
+---
+
 ### Validate Feed Cache Use Case
 
 #### Primary course:
@@ -168,6 +176,8 @@ And there’s a cached version of the feed
 
 #### Expired cache course (sad path):
 1. System deletes cache.
+
+---
 
 ### Cache Feed Use Case
 
@@ -188,7 +198,9 @@ And there’s a cached version of the feed
 #### Saving error course (sad path):
 1. System delivers error.
 
-## Flowchart
+---
+
+### Flowchart
 
 ![Feed Loading Feature](./images/feed_flowchart.png)
 
@@ -196,17 +208,17 @@ And there’s a cached version of the feed
 
 ### Image Feed
 
-| Property            | Type                       |
-|-------------------|---------------------- |
-| `id`                    | `UUID`                     |
-| `description` | `String` (optional)  |
-| `location`       | `String` (optional)  |
-| `url`                 | `URL`                        |
+| Property     | Type                 |
+|--------------|--------------------- |
+| `id`         | `UUID`               |
+| `description`| `String` (optional)  |
+| `location`   | `String` (optional)  |
+| `url`        | `URL`                |
 
 ### Payload contract
 
 ```
-GET *url* (TBD)
+GET /feed
 
 200 RESPONSE
 
@@ -235,3 +247,96 @@ GET *url* (TBD)
         ...
     ]
 }
+```
+### Load Image Comments From Remote Use Case
+
+#### Data:
+- ImageID
+
+#### Primary course (happy path):
+1. Execute "Load Image Comments" command with above data.
+2. System loads data from remote service.
+3. System validates data.
+4. System creates comments from valid data.
+5. System delivers comments.
+
+#### Invalid data – error course (sad path):
+1. System delivers invalid data error.
+
+#### No connectivity – error course (sad path):
+1. System delivers connectivity error.
+
+---
+
+## Model Specs
+
+### Image Comment
+
+| Property        | Type                    |
+|-----------------|-------------------------|
+| `id`            | `UUID`                  |
+| `message` 	    | `String`			          |
+| `created_at`    | `Date` (ISO8601 String) |
+| `author` 		    | `CommentAuthorObject`   |
+
+### Image Comment Author
+
+| Property          | Type                |
+|-------------------|---------------------|
+| `username` 	      | `String`			      |
+
+### Payload contract
+
+```
+GET /image/{image-id}/comments
+
+2xx RESPONSE
+
+{
+	"items": [
+		{
+			"id": "a UUID",
+			"message": "a message",
+			"created_at": "2020-05-20T11:24:59+0000",
+			"author": {
+				"username": "a username"
+			}
+		},
+		{
+			"id": "another UUID",
+			"message": "another message",
+			"created_at": "2020-05-19T14:23:53+0000",
+			"author": {
+				"username": "another username"
+			}
+		},
+		...
+	]
+}
+```
+
+## Architecture
+
+![EssentialFeed](./images/architecture_overview.png)
+
+### Business Logic (loaders)
+
+![Dependency Rejection](./images/dependency-rejection.png)
+
+### Presentation
+
+The presentation were reused for both `Feed` and `Image Comments`
+
+![Reusable Presentation](./images/reusable-presentation.png)
+
+### UI
+
+Also, the same table view were reused to display the feed and comments
+
+![Reusable UI](./images/reusable-ui.png)
+
+## Dependencies
+
+### Snapshot Testing
+
+Please make sure use an **iPhone 13** with **iOS 15** to run the snapshot tests. Otherwise tests will fail.
