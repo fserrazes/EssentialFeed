@@ -2,8 +2,16 @@
 
 ![CI-iOS](https://github.com/fserrazes/EssentialFeed/actions/workflows/CI-iOS.yml/badge.svg)
 ![CI-macOS](https://github.com/fserrazes/EssentialFeed/actions/workflows/CI-macOS.yml/badge.svg)
-![iOS](https://img.shields.io/badge/iOS-15.0-orange.svg)
-![macOS](https://img.shields.io/badge/macOS-10.15+-orange.svg)
+![iOS](https://img.shields.io/badge/iOS-16.0-orange.svg)
+![macOS](https://img.shields.io/badge/macOS-12+-orange.svg)
+
+## Test Coverage Stats
+
+| Module           | Tests | Lines | Coverage |
+|------------------|-------|-------|----------|
+| EssentialApp     |  48   | 555   | 93,0%    |
+| EssentialFeed    |  96   | 476   | 98,7%    |
+| EssentialFeediOS |   7   | 410   | 97,1%    |
 
 ## Requirements
 
@@ -319,26 +327,20 @@ GET /image/{image-id}/comments
 
 ## Architecture
 
-![EssentialFeed](./images/architecture_overview.png)
+![EssentialFeed](./.images/architecture_overview.png)
 
 ### Business Logic (loaders)
 
-![Dependency Rejection](./images/dependency-rejection.png)
+![Dependency Rejection](./.images/dependency-rejection.png)
 
 ### Presentation
 
 The presentation were reused for both `Feed` and `Image Comments`
 
-![Reusable Presentation](./images/reusable-presentation.png)
+![Reusable Presentation](./.images/reusable-presentation.png)
 
 ### UI
 
 Also, the same table view were reused to display the feed and comments
 
-![Reusable UI](./images/reusable-ui.png)
-
-## Dependencies
-
-### Snapshot Testing
-
-Please make sure use an **iPhone 13** with **iOS 15** to run the snapshot tests. Otherwise tests will fail.
+![Reusable UI](./.images/reusable-ui.png)
