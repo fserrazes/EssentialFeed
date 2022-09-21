@@ -266,9 +266,9 @@
 		0D7723622553FCBD0018245E /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		0D77236A25543F1C0018245E /* FeedCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCachePolicy.swift; sourceTree = "<group>"; };
 		0D78ED8D254196D900EEFAD7 /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0D78ED91254196D900EEFAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D78ED91254196D900EEFAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = EssentialFeed/Info.plist; sourceTree = "<group>"; };
 		0D78ED96254196D900EEFAD7 /* EssentialFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0D78ED9D254196D900EEFAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0D78ED9D254196D900EEFAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../EssentialFeed/EssentialFeed/Info.plist; sourceTree = "<group>"; };
 		0D78EDA92541979C00EEFAD7 /* FeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImage.swift; sourceTree = "<group>"; };
 		0D78EDCA2541A23A00EEFAD7 /* FeedItemsMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsMapperTests.swift; sourceTree = "<group>"; };
 		0D78EDD72546B46500EEFAD7 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
@@ -505,7 +505,8 @@
 				0D3036CF256675F8001ECF00 /* EssentialFeedCacheIntegrationTests.swift */,
 				0D3036D1256675F8001ECF00 /* Info.plist */,
 			);
-			path = EssentialFeedCacheIntegrationTests;
+			name = EssentialFeedCacheIntegrationTests;
+			path = EssentialFeed/EssentialFeedCacheIntegrationTests;
 			sourceTree = "<group>";
 		};
 		0D365DC825BE1D0C003DC3F0 /* Image Comments Feature */ = {
@@ -514,7 +515,7 @@
 				0D365DC925BE1E83003DC3F0 /* ImageComment.swift */,
 			);
 			name = "Image Comments Feature";
-			path = "Feed API";
+			path = "EssentialFeed/Image Comments Feature";
 			sourceTree = "<group>";
 		};
 		0D365DD525BE250D003DC3F0 /* Shared API */ = {
@@ -523,7 +524,8 @@
 				0D78EDD72546B46500EEFAD7 /* HTTPClient.swift */,
 				0DDA99ED25D1DE8F008D4165 /* Paginated.swift */,
 			);
-			path = "Shared API";
+			name = "Shared API";
+			path = "EssentialFeed/Shared API";
 			sourceTree = "<group>";
 		};
 		0D365DD625BE256A003DC3F0 /* Shared API Infra */ = {
@@ -531,7 +533,8 @@
 			children = (
 				0DB49D3D25485ED50066BDA8 /* URLSessionHTTPClient.swift */,
 			);
-			path = "Shared API Infra";
+			name = "Shared API Infra";
+			path = "EssentialFeed/Shared API Infra";
 			sourceTree = "<group>";
 		};
 		0D365DE325BE2689003DC3F0 /* Shared API Infra */ = {
@@ -549,7 +552,8 @@
 				0D365DC125BE14CC003DC3F0 /* ImageCommentsMapper.swift */,
 				0DDA993825CCA986008D4165 /* ImageCommentsEndpoint.swift */,
 			);
-			path = "Image Comments API";
+			name = "Image Comments API";
+			path = "EssentialFeed/Image Comments API";
 			sourceTree = "<group>";
 		};
 		0D365DE525BE27AD003DC3F0 /* Image Comments API */ = {
@@ -570,7 +574,7 @@
 			path = "Shared Presentation";
 			sourceTree = "<group>";
 		};
-		0D365E4A25C1B61E003DC3F0 /* Shared Presenter */ = {
+		0D365E4A25C1B61E003DC3F0 /* Shared Presentation */ = {
 			isa = PBXGroup;
 			children = (
 				0D365E4B25C1B644003DC3F0 /* LoadResourcePresenter.swift */,
@@ -580,7 +584,8 @@
 				0D5EF1BE2585595B0023529E /* ResourceErrorViewModel.swift */,
 				0D365E6225C23692003DC3F0 /* Shared.strings */,
 			);
-			path = "Shared Presenter";
+			name = "Shared Presentation";
+			path = "EssentialFeed/Shared Presentation";
 			sourceTree = "<group>";
 		};
 		0D365EA425C35415003DC3F0 /* Image Comments Presentation */ = {
@@ -598,7 +603,8 @@
 				0D365EBC25C35B8B003DC3F0 /* ImageCommentsPresenter.swift */,
 				0D365ED825C360C1003DC3F0 /* ImageComments.strings */,
 			);
-			path = "Image Comments Presentation";
+			name = "Image Comments Presentation";
+			path = "EssentialFeed/Image Comments Presentation";
 			sourceTree = "<group>";
 		};
 		0D5A9BC7257134240046DD10 /* Frameworks */ = {
@@ -656,7 +662,8 @@
 				0D5EF1FB258564260023529E /* FeedImageViewModel.swift */,
 				0D5EF170258554480023529E /* Feed.strings */,
 			);
-			path = "Feed Presentation";
+			name = "Feed Presentation";
+			path = "EssentialFeed/Feed Presentation";
 			sourceTree = "<group>";
 		};
 		0D5EF22525895EBE0023529E /* Helpers */ = {
@@ -709,13 +716,13 @@
 			children = (
 				0D365DD625BE256A003DC3F0 /* Shared API Infra */,
 				0D365DD525BE250D003DC3F0 /* Shared API */,
-				0D365E4A25C1B61E003DC3F0 /* Shared Presenter */,
+				0D365E4A25C1B61E003DC3F0 /* Shared Presentation */,
 				0D78EDD02542BEEE00EEFAD7 /* Feed API */,
-				0D365DE425BE2773003DC3F0 /* Image Comments API */,
-				0D78EDB325419A9800EEFAD7 /* Feed Feature */,
-				0D365DC825BE1D0C003DC3F0 /* Image Comments Feature */,
 				0DF42A9F255047EB00DEC1AC /* Feed Cache */,
+				0D78EDB325419A9800EEFAD7 /* Feed Feature */,
 				0D5EF17D258556340023529E /* Feed Presentation */,
+				0D365DE425BE2773003DC3F0 /* Image Comments API */,
+				0D365DC825BE1D0C003DC3F0 /* Image Comments Feature */,
 				0D365EBB25C35B5C003DC3F0 /* Image Comments Presentation */,
 				0D78ED91254196D900EEFAD7 /* Info.plist */,
 			);
@@ -735,7 +742,8 @@
 				0D365EA425C35415003DC3F0 /* Image Comments Presentation */,
 				0D78ED9D254196D900EEFAD7 /* Info.plist */,
 			);
-			path = EssentialFeedTests;
+			name = EssentialFeedTests;
+			path = EssentialFeed/EssentialFeedTests;
 			sourceTree = "<group>";
 		};
 		0D78EDB325419A9800EEFAD7 /* Feed Feature */ = {
@@ -746,7 +754,8 @@
 				0D5A9C0425767B2E0046DD10 /* FeedImageDataLoader.swift */,
 				0D677B7B258EAE60003B1D72 /* FeedImageDataCache.swift */,
 			);
-			path = "Feed Feature";
+			name = "Feed Feature";
+			path = "EssentialFeed/Feed Feature";
 			sourceTree = "<group>";
 		};
 		0D78EDD02542BEEE00EEFAD7 /* Feed API */ = {
@@ -757,7 +766,8 @@
 				0D365E2725C0D622003DC3F0 /* FeedImageDataMapper.swift */,
 				0DDA994425CCAA00008D4165 /* FeedEndpoint.swift */,
 			);
-			path = "Feed API";
+			name = "Feed API";
+			path = "EssentialFeed/Feed API";
 			sourceTree = "<group>";
 		};
 		0D78EDE12546C26600EEFAD7 /* Feed API */ = {
@@ -786,7 +796,8 @@
 				0DB49D472548A5820066BDA8 /* EssentialFeedAPIEndToEndTests.swift */,
 				0DB49D492548A5820066BDA8 /* Info.plist */,
 			);
-			path = EssentialFeedAPIEndToEndTests;
+			name = EssentialFeedAPIEndToEndTests;
+			path = EssentialFeed/EssentialFeedAPIEndToEndTests;
 			sourceTree = "<group>";
 		};
 		0DB49D5F254C07590066BDA8 /* Feed Cache */ = {
@@ -813,7 +824,8 @@
 				0D242D4625C7594800A672A6 /* Image Comments UI */,
 				0DC0841A2570CFBB0057BFFF /* Info.plist */,
 			);
-			path = EssentialFeediOS;
+			name = EssentialFeediOS;
+			path = EssentialFeed/EssentialFeediOS;
 			sourceTree = "<group>";
 		};
 		0DC084232570CFBB0057BFFF /* EssentialFeediOSTests */ = {
@@ -825,7 +837,8 @@
 				0D242D3925C753D500A672A6 /* Image Comments UI */,
 				0DC084262570CFBB0057BFFF /* Info.plist */,
 			);
-			path = EssentialFeediOSTests;
+			name = EssentialFeediOSTests;
+			path = EssentialFeed/EssentialFeediOSTests;
 			sourceTree = "<group>";
 		};
 		0DC42CC425841EEB00E563D3 /* Helpers */ = {
@@ -885,7 +898,8 @@
 				0DC7A7E6258A985200D9853F /* LocalFeedImageDataLoader.swift */,
 				0D77236A25543F1C0018245E /* FeedCachePolicy.swift */,
 			);
-			path = "Feed Cache";
+			name = "Feed Cache";
+			path = "EssentialFeed/Feed Cache";
 			sourceTree = "<group>";
 		};
 		0DF6E21425C762C600ECF3DD /* snapshots */ = {
@@ -1374,7 +1388,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeedCacheIntegrationTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeedCacheIntegrationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1395,7 +1409,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeedCacheIntegrationTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeedCacheIntegrationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1548,7 +1562,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = EssentialFeed/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeed/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1576,7 +1590,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = EssentialFeed/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeed/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1599,7 +1613,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeedTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1620,7 +1634,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeedTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1640,7 +1654,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeedAPIEndToEndTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeedAPIEndToEndTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1660,7 +1674,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeedAPIEndToEndTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeedAPIEndToEndTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1683,7 +1697,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = EssentialFeediOS/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeediOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1712,7 +1726,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = EssentialFeediOS/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeediOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1738,7 +1752,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeediOSTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeediOSTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1761,7 +1775,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RZ2BKVSB8Y;
-				INFOPLIST_FILE = EssentialFeediOSTests/Info.plist;
+				INFOPLIST_FILE = EssentialFeed/EssentialFeediOSTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
