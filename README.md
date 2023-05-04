@@ -3,7 +3,7 @@
 ![CI-iOS](https://github.com/fserrazes/EssentialFeed/actions/workflows/CI-iOS.yml/badge.svg)
 ![CI-macOS](https://github.com/fserrazes/EssentialFeed/actions/workflows/CI-macOS.yml/badge.svg)
 ![iOS](https://img.shields.io/badge/iOS-16.0-orange.svg)
-![macOS](https://img.shields.io/badge/macOS-12+-orange.svg)
+![macOS](https://img.shields.io/badge/macOS-13+-orange.svg)
 
 ## Test Coverage Stats
 
