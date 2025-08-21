@@ -20,6 +20,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         super.viewDidLoad()
         
         configureTableView()
+        configureTraitCollectionObservers()
         refresh()
     }
     
@@ -37,6 +38,12 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
             self?.tableView.beginUpdates()
             self?.tableView.sizeTableHeaderToFit()
             self?.tableView.endUpdates()
+        }
+    }
+    
+    private func configureTraitCollectionObservers() {
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, previous: UITraitCollection) in
+            self.tableView.reloadData()
         }
     }
     
