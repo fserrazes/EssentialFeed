@@ -94,7 +94,7 @@ class LoadResourcePresenterTests: XCTestCase {
             case display(resourceViewModel: String)
         }
         
-        private (set) var messages = Set<Message>()
+        private(set) var messages = Set<Message>()
         
         func display(_ viewModel: ResourceErrorViewModel) {
             messages.insert(.display(errorMessage: viewModel.message))

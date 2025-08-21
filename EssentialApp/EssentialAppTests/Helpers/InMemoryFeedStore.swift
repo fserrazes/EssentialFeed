@@ -6,7 +6,7 @@ import Foundation
 import EssentialFeed
 
 class InMemoryFeedStore {
-    private (set) var feedCache: CachedFeed?
+    private(set) var feedCache: CachedFeed?
     private var feedImageDataCache: [URL: Data] = [:]
     
     private init(feedCache: CachedFeed? = nil) {

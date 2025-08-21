@@ -12,7 +12,7 @@ class FeedStoreSpy: FeedStore {
         case retrieve
     }
     
-    private (set) var receivedMessages = [ReceivedMessages]()
+    private(set) var receivedMessages = [ReceivedMessages]()
     
     private var deletionResult: Result<Void, Error>?
     private var insertionResult: Result<Void, Error>?
