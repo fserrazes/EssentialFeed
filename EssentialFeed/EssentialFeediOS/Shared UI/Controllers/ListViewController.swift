@@ -9,10 +9,12 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     private(set) public var errorView = ErrorView()
     
     private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
-        .init(tableView: tableView) { (tableView, index, controller) -> UITableViewCell? in
-            return controller.dataSource.tableView(tableView, cellForRowAt: index)
+        .init(tableView: tableView) { (tableView, index, controller) in
+            controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
     }()
+    
+    private var onViewDidAppear: ((ListViewController) -> Void)?
     
     public var onRefresh: (() -> Void)?
     
@@ -21,14 +23,19 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         
         configureTableView()
         configureTraitCollectionObservers()
-        refresh()
+        
+        onViewDidAppear = { vc in
+            vc.onViewDidAppear = nil
+            vc.refresh()
+        }
     }
     
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tableView.sizeTableHeaderToFit()
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        onViewDidAppear?(self)
     }
-    
+
     private func configureTableView() {
         dataSource.defaultRowAnimation = .fade
         tableView.dataSource = dataSource
@@ -47,6 +54,12 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         }
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tableView.sizeTableHeaderToFit()
+    }
+    
     @IBAction private func refresh() {
         onRefresh?()
     }
@@ -57,11 +70,8 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
             snapshot.appendSections([section])
             snapshot.appendItems(cellControllers, toSection: section)
         }
-        if #available(iOS 15.0, *) {
-            dataSource.applySnapshotUsingReloadData(snapshot)
-        } else {
-            dataSource.apply(snapshot)
-        }
+        
+        dataSource.apply(snapshot)
     }
     
     public func display(_ viewModel: ResourceLoadingViewModel) {
@@ -70,12 +80,6 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     
     public func display(_ viewModel: ResourceErrorViewModel) {
         errorView.message = viewModel.message
-    }
-    
-    public override func traitCollectionDidChange(_ previous: UITraitCollection?) {
-        if previous?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            tableView.reloadData()
-        }
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

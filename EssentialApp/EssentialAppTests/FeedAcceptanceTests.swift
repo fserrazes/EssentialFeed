@@ -7,8 +7,7 @@ import EssentialFeed
 import EssentialFeediOS
 @testable import EssentialApp
 
-class FeedAcceptanceTests: XCTestCase {
-    
+final class FeedAcceptanceTests: XCTestCase {
     func test_onLaunch_displaysRemoteFeedWhenCustomerHasConnectivity() {
         let feed = launch(httpClient: .online(response), store: .empty)
         
@@ -74,19 +73,20 @@ class FeedAcceptanceTests: XCTestCase {
     func test_onFeedImageSelection_displaysComments() {
         let comments = showCommentsForFirstImage()
         
-        XCTAssertEqual(comments.numberOfRenderedCommmentsViews(), 1)
+        XCTAssertEqual(comments.numberOfRenderedComments(), 1)
         XCTAssertEqual(comments.commentMessage(at: 0), makeCommentMessage())
     }
     
     // MARK: - Helpers
-    
     private func launch(httpClient: HTTPClientStub = .offline, store: InMemoryFeedStore = .empty) -> ListViewController {
         let sut = SceneDelegate(httpClient: httpClient, store: store, scheduler: .immediateOnMainQueue)
         sut.window = UIWindow(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         sut.configureWindow()
         
         let nav = sut.window?.rootViewController as? UINavigationController
-        return nav?.topViewController as! ListViewController
+        let vc = nav?.topViewController as! ListViewController
+        vc.simulateAppearance()
+        return vc
     }
     
     private func enterBackground(with store: InMemoryFeedStore) {
@@ -164,10 +164,13 @@ class FeedAcceptanceTests: XCTestCase {
     
     private func showCommentsForFirstImage() -> ListViewController {
         let feed = launch(httpClient: .online(response), store: .empty)
+        
         feed.simulateTapOnFeedImage(at: 0)
         RunLoop.current.run(until: Date())
         
-        let navigationController = feed.navigationController
-        return navigationController?.topViewController as! ListViewController
+        let nav = feed.navigationController
+        let vc = nav?.topViewController as! ListViewController
+        vc.simulateAppearance()
+        return vc
     }
 }

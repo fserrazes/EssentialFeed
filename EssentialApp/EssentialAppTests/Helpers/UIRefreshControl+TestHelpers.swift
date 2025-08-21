@@ -5,7 +5,7 @@
 import UIKit
 
 extension UIRefreshControl {
-    func simulatePullRefresh() {
+    func simulatePullToRefresh() {
         simulate(event: .valueChanged)
     }
 }
