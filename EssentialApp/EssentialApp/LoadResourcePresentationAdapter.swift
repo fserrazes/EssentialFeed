@@ -23,7 +23,8 @@ final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
         presenter?.didStartLoading()
         self.isLoading = true
         
-        cancellable = loader().dispatchOnMainQueue()
+        cancellable = loader()
+            .dispatchOnMainThread()
             .handleEvents(receiveCancel: { [weak self] in
                 self?.isLoading = false
             })

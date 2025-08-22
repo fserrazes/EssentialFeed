@@ -7,16 +7,6 @@ import Combine
 import EssentialFeed
 
 public extension Paginated {
-     var loadMorePublisher: (() -> AnyPublisher<Self, Error>)? {
-         guard let loadMore = loadMore else { return nil }
-
-         return {
-             Deferred {
-                 Future(loadMore)
-             }.eraseToAnyPublisher()
-         }
-     }
-    
     init(items: [Item], loadMorePublisher: (() -> AnyPublisher<Self, Error>)?) {
         self.init(items: items, loadMore: loadMorePublisher.map { publisher in
             return { completion in
@@ -30,7 +20,17 @@ public extension Paginated {
             }
         })
     }
- }
+    
+    var loadMorePublisher: (() -> AnyPublisher<Self, Error>)? {
+        guard let loadMore = loadMore else { return nil }
+        
+        return {
+            Deferred {
+                Future(loadMore)
+            }.eraseToAnyPublisher()
+        }
+    }
+}
 
 public extension HTTPClient {
     typealias Publisher = AnyPublisher<(Data, HTTPURLResponse), Error>
@@ -54,9 +54,12 @@ public extension FeedImageDataLoader {
     func loadImageDataPublisher(from url: URL) -> Publisher {
         return Deferred {
             Future { completion in
-                completion(Result { try self.loadImageData(from: url) })
+                completion(Result {
+                    try self.loadImageData(from: url)
+                })
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
 }
 
@@ -82,7 +85,8 @@ public extension LocalFeedLoader {
             Future { completion in
                 completion(Result{ try self.load() })
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
 }
 
@@ -113,13 +117,12 @@ private extension FeedCache {
 }
 
 extension Publisher {
-    func dispatchOnMainQueue() -> AnyPublisher<Output, Failure> {
-        receive(on: DispatchQueue.immediateWhenOnMainQueueScheduler).eraseToAnyPublisher()
+    func dispatchOnMainThread() -> AnyPublisher<Output, Failure> {
+        receive(on: DispatchQueue.immediateWhenOnMainThreadScheduler).eraseToAnyPublisher()
     }
 }
 
 extension DispatchQueue {
-    
     static var immediateWhenOnMainQueueScheduler: ImmediateWhenOnMainQueueScheduler {
         ImmediateWhenOnMainQueueScheduler.shared
     }
@@ -165,6 +168,39 @@ extension DispatchQueue {
             DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options, action)
         }
     }
+    
+    static var immediateWhenOnMainThreadScheduler: ImmediateWhenOnMainThreadScheduler {
+        ImmediateWhenOnMainThreadScheduler()
+    }
+    
+    struct ImmediateWhenOnMainThreadScheduler: Scheduler {
+        typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
+        typealias SchedulerOptions = DispatchQueue.SchedulerOptions
+        
+        var now: SchedulerTimeType {
+            DispatchQueue.main.now
+        }
+        
+        var minimumTolerance: SchedulerTimeType.Stride {
+            DispatchQueue.main.minimumTolerance
+        }
+        
+        func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
+            guard Thread.isMainThread else {
+                return DispatchQueue.main.schedule(options: options, action)
+            }
+            
+            action()
+        }
+        
+        func schedule(after date: SchedulerTimeType, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) {
+            DispatchQueue.main.schedule(after: date, tolerance: tolerance, options: options, action)
+        }
+        
+        func schedule(after date: SchedulerTimeType, interval: SchedulerTimeType.Stride, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
+            DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options, action)
+        }
+    }
 }
 
 typealias AnyDispatchQueueScheduler = AnyScheduler<DispatchQueue.SchedulerTimeType, DispatchQueue.SchedulerOptions>
@@ -173,28 +209,31 @@ extension AnyDispatchQueueScheduler {
     static var immediateOnMainQueue: Self {
         DispatchQueue.immediateWhenOnMainQueueScheduler.eraseToAnyScheduler()
     }
+    
+    static var immediateOnMainThread: Self {
+        DispatchQueue.immediateWhenOnMainThreadScheduler.eraseToAnyScheduler()
+    }
 }
 
 extension Scheduler {
-    func eraseToAnyScheduler() -> AnyScheduler<SchedulerTimeType,SchedulerOptions> {
+    func eraseToAnyScheduler() -> AnyScheduler<SchedulerTimeType, SchedulerOptions> {
         AnyScheduler(self)
     }
 }
 
-struct AnyScheduler<SchedulerTimeType: Strideable, SchedulerOptions> : Scheduler where SchedulerTimeType.Stride: SchedulerTimeIntervalConvertible {
-    
+struct AnyScheduler<SchedulerTimeType: Strideable, SchedulerOptions>: Scheduler where SchedulerTimeType.Stride: SchedulerTimeIntervalConvertible {
     private let _now: () -> SchedulerTimeType
     private let _minimumTolerance: () -> SchedulerTimeType.Stride
-    private let _scheduler: (SchedulerOptions?, @escaping () -> Void) -> Void
-    private let _schedulerAfter: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerOptions?, @escaping () -> Void) -> Void
-    private let _schedulerAfterInterval: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerTimeType.Stride, SchedulerOptions?, @escaping () -> Void) -> Cancellable
-    
-    init<S>(_ scheduler: S) where SchedulerTimeType == S.SchedulerTimeType, SchedulerOptions == S.SchedulerOptions, S : Scheduler {
+    private let _schedule: (SchedulerOptions?, @escaping () -> Void) -> Void
+    private let _scheduleAfter: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerOptions?, @escaping () -> Void) -> Void
+    private let _scheduleAfterInterval: (SchedulerTimeType, SchedulerTimeType.Stride, SchedulerTimeType.Stride, SchedulerOptions?, @escaping () -> Void) -> Cancellable
+
+    init<S>(_ scheduler: S) where SchedulerTimeType == S.SchedulerTimeType, SchedulerOptions == S.SchedulerOptions, S: Scheduler {
         _now = { scheduler.now }
         _minimumTolerance = { scheduler.minimumTolerance }
-        _scheduler = scheduler.schedule(options:_:)
-        _schedulerAfter = scheduler.schedule(after:tolerance:options:_:)
-        _schedulerAfterInterval = scheduler.schedule(after:interval:tolerance:options:_:)
+        _schedule = scheduler.schedule(options:_:)
+        _scheduleAfter = scheduler.schedule(after:tolerance:options:_:)
+        _scheduleAfterInterval = scheduler.schedule(after:interval:tolerance:options:_:)
     }
     
     var now: SchedulerTimeType { _now() }
@@ -202,14 +241,14 @@ struct AnyScheduler<SchedulerTimeType: Strideable, SchedulerOptions> : Scheduler
     var minimumTolerance: SchedulerTimeType.Stride { _minimumTolerance() }
     
     func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
-        _scheduler(options, action)
+        _schedule(options, action)
     }
     
     func schedule(after date: SchedulerTimeType, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) {
-        _schedulerAfter(date, tolerance, options, action)
+        _scheduleAfter(date, tolerance, options, action)
     }
     
     func schedule(after date: SchedulerTimeType, interval: SchedulerTimeType.Stride, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
-        _schedulerAfterInterval(date, interval, tolerance, options, action)
+        _scheduleAfterInterval(date, interval, tolerance, options, action)
     }
 }
