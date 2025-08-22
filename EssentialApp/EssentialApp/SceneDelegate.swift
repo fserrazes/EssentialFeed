@@ -64,10 +64,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
-        do {
-            try localFeedLoader.validateCache()
-        } catch {
-            logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+        scheduler.schedule { [localFeedLoader, logger] in
+            do {
+                try localFeedLoader.validateCache()
+            } catch {
+                logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+            }
         }
     }
     
@@ -88,10 +90,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
         return makeRemoteFeedLoader()
+            .receive(on: scheduler)
             .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
             .map(makeFirstPage)
-            .subscribe(on: scheduler)
             .eraseToAnyPublisher()
     }
     
@@ -100,7 +102,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .zip(makeRemoteFeedLoader(after: last))
             .map { (cachedItems, newItems) in
                 (cachedItems + newItems, newItems.last)
-            }.map(makePage)
+            }
+            .map(makePage)
+            .receive(on: scheduler)
 //            .delay(for: 2, scheduler: DispatchQueue.main)
 //            .flatMap { _ in Fail(error: NSError()) }
             .caching(to: localFeedLoader)
@@ -138,8 +142,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                    .logErrors(url: url, logger: logger)
 //                    .logTimeElapsed(url: url, logger: logger)
                     .tryMap(FeedImageDataMapper.map)
+                    .receive(on: scheduler)
                     .caching(to: localImageLoader, using: url)
-                    .subscribe(on: scheduler)
                     .eraseToAnyPublisher()
             }).subscribe(on: scheduler)
             .eraseToAnyPublisher()
