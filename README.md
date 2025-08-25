@@ -2,16 +2,16 @@
 
 ![CI-iOS](https://github.com/fserrazes/EssentialFeed/actions/workflows/CI-iOS.yml/badge.svg)
 ![CI-macOS](https://github.com/fserrazes/EssentialFeed/actions/workflows/CI-macOS.yml/badge.svg)
-![iOS](https://img.shields.io/badge/iOS-16.0-orange.svg)
+![iOS](https://img.shields.io/badge/iOS-17.0-orange.svg)
 ![macOS](https://img.shields.io/badge/macOS-13+-orange.svg)
 
 ## Test Coverage Stats
 
-| Module           | Tests | Lines | Coverage |
-|------------------|-------|-------|----------|
-| EssentialApp     |  48   | 555   | 93,0%    |
-| EssentialFeed    |  96   | 476   | 98,7%    |
-| EssentialFeediOS |   7   | 410   | 97,1%    |
+| Module           | Tests | Duration |Lines | Coverage |
+|------------------|-------|----------|------|----------|
+| EssentialApp     |  52   | 1.147 s  | 637  | 87,3%    |
+| EssentialFeed    |  101  | 0.305 s  | 419  | 94,7%    |
+| EssentialFeediOS |   7   | 5.504 s  | 460  | 78,0%    |
 
 ## Requirements
 
