@@ -13,7 +13,27 @@
 | EssentialFeed    |  101  | 0.305 s  | 419  | 94,7%    |
 | EssentialFeediOS |   7   | 5.504 s  | 460  | 78,0%    |
 
-## Requirements
+## Architecture
+
+![EssentialFeed](./.images/architecture_overview.png)
+
+### Business Logic (loaders)
+
+![Dependency Rejection](./.images/dependency-rejection.png)
+
+### Presentation
+
+The presentation were reused for both `Feed` and `Image Comments`
+
+![Reusable Presentation](./.images/reusable-presentation.png)
+
+### UI
+
+Also, the same table view were reused to display the feed and comments
+
+![Reusable UI](./.images/reusable-ui.png)
+
+# Requirements
 
 ## Behaviour Driven Development Specs (BDD)
 
@@ -212,7 +232,7 @@ Given the customer doesn't have connectivity
 
 ### Flowchart
 
-![Feed Loading Feature](./images/feed_flowchart.png)
+![Feed Loading Feature](./.images/feed_flowchart.png)
 
 ## Model Specs
 
@@ -324,23 +344,3 @@ GET /image/{image-id}/comments
 	]
 }
 ```
-
-## Architecture
-
-![EssentialFeed](./.images/architecture_overview.png)
-
-### Business Logic (loaders)
-
-![Dependency Rejection](./.images/dependency-rejection.png)
-
-### Presentation
-
-The presentation were reused for both `Feed` and `Image Comments`
-
-![Reusable Presentation](./.images/reusable-presentation.png)
-
-### UI
-
-Also, the same table view were reused to display the feed and comments
-
-![Reusable UI](./.images/reusable-ui.png)
