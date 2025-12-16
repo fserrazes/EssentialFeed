@@ -8,9 +8,9 @@ import EssentialFeediOS
 
 class SceneDelegateTests: XCTestCase {
     
-    func test_configureWindow_setsWindowAsKeyAndVisible() {
-        let window = UIWindowSpy()
+    func test_configureWindow_setsWindowAsKeyAndVisible() throws {
         let sut = SceneDelegate()
+        let window = try UIWindowSpy.make()
         sut.window = window
         
         sut.configureWindow()
@@ -18,9 +18,10 @@ class SceneDelegateTests: XCTestCase {
         XCTAssertEqual(window.makeKeyAndVisibleCallCount, 1, "Expected window to be visible")
     }
     
-    func test_configureWindow_configuresRootViewController() {
+    func test_configureWindow_configuresRootViewController() throws {
         let sut = SceneDelegate()
-        sut.window = UIWindowSpy()
+        let window = try UIWindowSpy.make()
+        sut.window = window
         
         sut.configureWindow()
         
@@ -37,6 +38,11 @@ class SceneDelegateTests: XCTestCase {
         
         override func makeKeyAndVisible() {
             makeKeyAndVisibleCallCount += 1
+        }
+        
+        static func make() throws -> UIWindowSpy {
+            let dummyScene = try XCTUnwrap((UIWindowScene.self as NSObject.Type).init() as? UIWindowScene)
+            return UIWindowSpy(windowScene: dummyScene)
         }
     }
 }
