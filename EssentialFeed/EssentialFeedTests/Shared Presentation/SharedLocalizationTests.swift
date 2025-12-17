@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class SharedLocalizationTests: XCTestCase {
-
+@MainActor
+final class SharedLocalizationTests: XCTestCase {
     func test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations() {
         let table = "Shared"
         let bundle = Bundle(for: LoadResourcePresenter<Any, DummyView>.self)

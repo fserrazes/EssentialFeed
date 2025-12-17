@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class CacheFeedUseCaseTests: XCTestCase {
-
+@MainActor
+final class CacheFeedUseCaseTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_ , store) = makeSUT()
         XCTAssertEqual(store.receivedMessages, [])
@@ -61,8 +61,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         })
     }
     
-    //MARK: - Helper
-    
+    // MARK: - Helper
     private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
         let store = FeedStoreSpy()
         let sut = LocalFeedLoader(store: store, currentDate: currentDate)

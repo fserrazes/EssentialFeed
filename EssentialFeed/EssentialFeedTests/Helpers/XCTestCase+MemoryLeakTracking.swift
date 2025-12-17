@@ -5,7 +5,7 @@
 import XCTest
 
 extension XCTestCase {
-    
+    @MainActor
     func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
         addTeardownBlock { [weak instance] in
             XCTAssertNil(instance, "Instance should have been deallocated. Potencial memory leak.",

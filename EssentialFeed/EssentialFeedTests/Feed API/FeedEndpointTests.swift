@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class FeedEndpointTests: XCTestCase {
-    
+@MainActor
+final class FeedEndpointTests: XCTestCase {
     func test_feed_endpointURL() {
         let baseURL = URL(string: "http://base-url.com")!
         

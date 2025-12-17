@@ -6,7 +6,8 @@ import XCTest
 import EssentialFeediOS
 @testable import EssentialApp
 
-class SceneDelegateTests: XCTestCase {
+@MainActor
+final class SceneDelegateTests: XCTestCase {
     
     func test_configureWindow_setsWindowAsKeyAndVisible() throws {
         let sut = SceneDelegate()

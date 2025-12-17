@@ -4,6 +4,7 @@
 import XCTest
 import EssentialFeed
 
+@MainActor
 final class InMemoryFeedStoreTests: XCTestCase, FeedStoreSpecs {
     func test_retrieve_deliversEmptyOnEmptyCache() throws {
         let sut = makeSUT()
@@ -70,7 +71,6 @@ final class InMemoryFeedStoreTests: XCTestCase, FeedStoreSpecs {
         
         assertThatDeleteEmptiesPreviouslyInsertedCache(on: sut)
     }
-    
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> InMemoryFeedStore {

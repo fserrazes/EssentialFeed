@@ -7,10 +7,10 @@ import Foundation
 import EssentialFeed
 import EssentialFeediOS
 
+@MainActor
 class LoaderSpy {
     
     // MARK: - FeedLoader
-    
     private var feedRequests = [PassthroughSubject<Paginated<FeedImage>, Error>]()
     private var loadMoreRequests = [PassthroughSubject<Paginated<FeedImage>, Error>]()
     
@@ -59,7 +59,6 @@ class LoaderSpy {
     
     
     // MARK: - FeedImageDataLoader
-    
     private var imageRequests = [(url: URL, publisher: PassthroughSubject<Data, Error>)]()
     
     var loadedImageURLs: [URL] {

@@ -6,8 +6,8 @@ import XCTest
 import EssentialFeediOS
 @testable import EssentialFeed
 
-class ImageCommentsSnapshotTests: XCTestCase {
-
+@MainActor
+final class ImageCommentsSnapshotTests: XCTestCase {
     func test_listWithComments() {
         let sut = makeSUT()
         
@@ -19,7 +19,6 @@ class ImageCommentsSnapshotTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    
     private func makeSUT() -> ListViewController {
         let bundle = Bundle(for: ListViewController.self)
         let storyboard = UIStoryboard(name: "ImageComments", bundle: bundle)

@@ -15,7 +15,7 @@ public protocol HTTPClient {
     /// Clients are responsible to dispatch to appropriate threads, if needed.
     @discardableResult
     @available(*, deprecated, message: "Use async instead")
-    func get(from url: URL, completion: @escaping (Result) -> Void) -> HTTPClientTask
+    func get(from url: URL, completion: @Sendable @escaping (Result) -> Void) -> HTTPClientTask
     func get(from url: URL) async throws -> (Data, HTTPURLResponse)
 }
 

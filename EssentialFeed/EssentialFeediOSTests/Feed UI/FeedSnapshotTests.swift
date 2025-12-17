@@ -6,8 +6,8 @@ import XCTest
 import EssentialFeediOS
 @testable import EssentialFeed
 
-class FeedSnapshotTests: XCTestCase {
-    
+@MainActor
+final class FeedSnapshotTests: XCTestCase {
     func test_feedWithContent() {
         let sut = makeSUT()
         
@@ -47,7 +47,6 @@ class FeedSnapshotTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    
     private func makeSUT() -> ListViewController {
         let bundle = Bundle(for: ListViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)

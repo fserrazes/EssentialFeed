@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class CacheFeedImageDataUseCaseTests: XCTestCase {
-    
+@MainActor
+final class CacheFeedImageDataUseCaseTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
@@ -41,7 +41,6 @@ class CacheFeedImageDataUseCaseTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
         let store = FeedImageDataStoreSpy()
         let sut = LocalFeedImageDataLoader(store: store)

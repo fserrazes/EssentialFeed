@@ -5,7 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class ValidateFeedCacheUseCaseTests: XCTestCase {
+@MainActor
+final class ValidateFeedCacheUseCaseTests: XCTestCase {
     
     func test_init_doesNotMessageStoreUponCreation() {
         let (_ , store) = makeSUT()

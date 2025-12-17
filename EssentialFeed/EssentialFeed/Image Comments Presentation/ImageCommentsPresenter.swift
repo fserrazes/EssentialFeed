@@ -26,7 +26,7 @@ public final class ImageCommentsPresenter {
     }
 }
 
-public struct ImageCommentsViewModel {
+public struct ImageCommentsViewModel: Sendable {
     public let comments: [ImageCommentViewModel]
 }
 

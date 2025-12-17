@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class FeedImageDataMapperTests: XCTestCase {
-    
+@MainActor
+final class FeedImageDataMapperTests: XCTestCase {
     func test__map_throwsErrorOnNon200HTTPResponse() throws {
         let samples = [199, 201, 300, 400, 500]
         

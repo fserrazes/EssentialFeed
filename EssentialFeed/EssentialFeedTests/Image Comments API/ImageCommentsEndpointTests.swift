@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class ImageCommentsEndpointTests: XCTestCase {
-    
+@MainActor
+final class ImageCommentsEndpointTests: XCTestCase {
     func test_imageComments_endpointURL() {
         let imageID = UUID(uuidString: "2239CBA2-CB35-4392-ADC0-24A37D38E010")!
         let baseURL = URL(string: "http://base-url.com")!

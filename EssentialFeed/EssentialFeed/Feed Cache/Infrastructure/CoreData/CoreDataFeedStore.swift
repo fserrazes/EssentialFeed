@@ -5,9 +5,10 @@
 import Foundation
 import CoreData
 
-public final class CoreDataFeedStore {
-    private static let modelName = "FeedStore"
+public final class CoreDataFeedStore : Sendable {
+    @MainActor
     private static let model = NSManagedObjectModel.with(name: modelName, in: Bundle(for: CoreDataFeedStore.self))
+    private static let modelName = "FeedStore"
     
     private let container: NSPersistentContainer
     let context: NSManagedObjectContext
@@ -26,20 +27,24 @@ public final class CoreDataFeedStore {
         context == container.viewContext ? .main : .background
     }
     
-    public init(storeURL: URL, contextQueue: ContextQueue = .background) throws {
+    @MainActor
+    public convenience init(storeURL: URL, contextQueue: ContextQueue = .background) throws {
         guard let model = CoreDataFeedStore.model else {
             throw StoreError.modelNotFound
         }
-        
+        try self.init(storeURL: storeURL, contextQueue: contextQueue, model: model)
+    }
+    
+    public init(storeURL: URL, contextQueue: ContextQueue = .background, model: NSManagedObjectModel) throws {
         do {
-            container = try NSPersistentContainer.load(name: CoreDataFeedStore.modelName, model: model, url: storeURL)
+            container = try NSPersistentContainer.load(name: CoreDataFeedStore.modelName, model: model, url: storeURL, )
             context = contextQueue == .main ? container.viewContext : container.newBackgroundContext()
         } catch {
             throw StoreError.failedToLoadPersistentContainer(error)
         }
     }
     
-    public func perform(_ action: @escaping () -> Void) {
+    public func perform(_ action:  @Sendable @escaping () -> Void) {
         context.perform(action)
     }
     

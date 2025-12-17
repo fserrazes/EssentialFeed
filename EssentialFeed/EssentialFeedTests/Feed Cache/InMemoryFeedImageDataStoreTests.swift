@@ -4,6 +4,7 @@
 import XCTest
 import EssentialFeed
 
+@MainActor
 final class InMemoryFeedImageDataStoreTests: XCTestCase, FeedImageDataStoreSpecs {
     func test_retrieveImageData_deliversNotFoundWhenEmpty() throws {
         let sut = makeSUT()

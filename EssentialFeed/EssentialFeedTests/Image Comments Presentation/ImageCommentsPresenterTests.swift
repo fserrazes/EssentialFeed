@@ -5,8 +5,8 @@
 import XCTest
 import EssentialFeed
 
-class ImageCommentsPresenterTests: XCTestCase {
-    
+@MainActor
+final class ImageCommentsPresenterTests: XCTestCase {
     func test_title_is_localized() {
         XCTAssertEqual(ImageCommentsPresenter.title, localized("IMAGE_COMMENTS_VIEW_TITLE"))
     }
@@ -30,7 +30,6 @@ class ImageCommentsPresenterTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    
     private func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
         let table = "ImageComments"
         let bundle = Bundle(for: ImageCommentsPresenter.self)
