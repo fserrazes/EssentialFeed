@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D437EB42EF406B00011C734 /* LoaderSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D437EB32EF406AF0011C734 /* LoaderSpy.swift */; };
 		0D677B4E258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D677B4D258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift */; };
 		0D677B52258D56E1003B1D72 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D677B51258D56E1003B1D72 /* SharedTestHelpers.swift */; };
 		0DB21DCA258C207D00917693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB21DC9258C207D00917693 /* AppDelegate.swift */; };
@@ -65,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D437EB32EF406AF0011C734 /* LoaderSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderSpy.swift; sourceTree = "<group>"; };
 		0D677B4D258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		0D677B51258D56E1003B1D72 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		0DB21DC6258C207D00917693 /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +136,7 @@
 				0D677B51258D56E1003B1D72 /* SharedTestHelpers.swift */,
 				0D677B4D258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift */,
 				0DFAA0F3259A71D500EC54BE /* HTTPClientStub.swift */,
+				0D437EB32EF406AF0011C734 /* LoaderSpy.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				0DFAA0B7259A158300EC54BE /* UIRefreshControl+TestHelpers.swift in Sources */,
 				0DFAA0BB259A158300EC54BE /* UIButton+TestHelpers.swift in Sources */,
 				0DFAA0B9259A158300EC54BE /* ListViewController+TestHelpers.swift in Sources */,
+				0D437EB42EF406B00011C734 /* LoaderSpy.swift in Sources */,
 				0DFAA0B8259A158300EC54BE /* UIImage+TestHelpers.swift in Sources */,
 				0DFAA0BC259A158300EC54BE /* FeedImageCell+TestHelpers.swift in Sources */,
 				0DFAA0B4259A158300EC54BE /* UIControl+TestHelpers.swift in Sources */,
