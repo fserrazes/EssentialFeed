@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct ImageComment: Hashable {
+public struct ImageComment: Hashable, Sendable {
     public let id: UUID
     public let message: String
     public let createdAt: Date

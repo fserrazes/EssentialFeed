@@ -5,7 +5,6 @@
 import os
 import UIKit
 import CoreData
-import Combine
 import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -82,17 +81,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func showComments(for image: FeedImage) {
         let url = ImageCommentsEndpoint.get(image.id).url(baseURL: baseURL)
-        let comments = CommentsUIComposer.commentsComposedWith(commentsLoader: makeRemoteCommentsLoader(url: url))
+        let comments = CommentsUIComposer.commentsComposedWith(commentsLoader: loadComments(url: url))
         navigationController.pushViewController(comments, animated: true)
     }
     
-    private func makeRemoteCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
-        return { [httpClient] in
-            return httpClient
-                .getPublisher(url: url)
-                .tryMap(ImageCommentsMapper.map)
-                .eraseToAnyPublisher()
-        }
+    private func loadComments(url: URL) -> () async throws -> [ImageComment] {
+        let (data, response) = try await httpClient.get(from: url)
+        return try ImageCommentsMapper.map(data, from: response)
     }
     
     private func loadRemoteFeedWithLocalFallback() async throws -> Paginated<FeedImage> {
