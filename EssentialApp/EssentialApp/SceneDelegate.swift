@@ -10,16 +10,6 @@ import EssentialFeed
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
-    private lazy var scheduler: AnyDispatchQueueScheduler = {
-        if let store = store as? CoreDataFeedStore {
-            return .scheduler(for: store)
-        }
-        return DispatchQueue(
-            label: "com.serrazes.infra.queue",
-            qos: .userInitiated
-        ).eraseToAnyScheduler()
-    }()
-    
     private lazy var logger = Logger(subsystem: "com.serrazes.EssentialApp", category: "main")
     
     private lazy var httpClient: HTTPClient = {
@@ -39,10 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }()
     
     private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
-    
-    private lazy var localFeedLoader: LocalFeedLoader = {
-        LocalFeedLoader(store: store, currentDate: Date.init)
-    }()
     
     private lazy var navigationController = UINavigationController(
         rootViewController: FeedUIComposer.feedComposedWith(
@@ -70,13 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneWillResignActive(_ scene: UIScene) {
-        scheduler.schedule { [localFeedLoader, logger] in
-            do {
-                try localFeedLoader.validateCache()
-            } catch {
-                logger.error("Failed to validate cache with error: \(error.localizedDescription)")
-            }
-        }
+        validateCache()
     }
     
     func showComments(for image: FeedImage) {
@@ -86,8 +66,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func loadComments(url: URL) -> () async throws -> [ImageComment] {
-        let (data, response) = try await httpClient.get(from: url)
-        return try ImageCommentsMapper.map(data, from: response)
+        return { [httpClient] in
+            let (data, response) = try await httpClient.get(from: url)
+            return try ImageCommentsMapper.map(data, from: response)
+        }
+    }
+    
+    private func validateCache() {
+        Task.immediate { @MainActor in
+            await store.schedule { [store, logger] in
+                do {
+                    let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
+                    try localFeedLoader.validateCache()
+                } catch {
+                    logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+                }
+            }
+        }
     }
     
     private func loadRemoteFeedWithLocalFallback() async throws -> Paginated<FeedImage> {
