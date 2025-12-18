@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D437EB42EF406B00011C734 /* LoaderSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D437EB32EF406AF0011C734 /* LoaderSpy.swift */; };
+		0D437EB62EF425EE0011C734 /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D437EB52EF425EE0011C734 /* FeedService.swift */; };
 		0D677B4E258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D677B4D258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift */; };
 		0D677B52258D56E1003B1D72 /* SharedTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D677B51258D56E1003B1D72 /* SharedTestHelpers.swift */; };
 		0DB21DCA258C207D00917693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB21DC9258C207D00917693 /* AppDelegate.swift */; };
@@ -66,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		0D437EB32EF406AF0011C734 /* LoaderSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderSpy.swift; sourceTree = "<group>"; };
+		0D437EB52EF425EE0011C734 /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 		0D677B4D258D564E003B1D72 /* XCTestCase+MemoryLeakTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+MemoryLeakTracking.swift"; sourceTree = "<group>"; };
 		0D677B51258D56E1003B1D72 /* SharedTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTestHelpers.swift; sourceTree = "<group>"; };
 		0DB21DC6258C207D00917693 /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +165,7 @@
 			children = (
 				0DB21DC9258C207D00917693 /* AppDelegate.swift */,
 				0DB21DCB258C207D00917693 /* SceneDelegate.swift */,
+				0D437EB52EF425EE0011C734 /* FeedService.swift */,
 				0DFAA094259A151B00EC54BE /* FeedUIComposer.swift */,
 				0DDA992F25CC2047008D4165 /* CommentsUIComposer.swift */,
 				0DFAA097259A151B00EC54BE /* WeakRefVirtualProxy.swift */,
@@ -299,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DFAA09A259A151B00EC54BE /* FeedUIComposer.swift in Sources */,
+				0D437EB62EF425EE0011C734 /* FeedService.swift in Sources */,
 				0DB21DCA258C207D00917693 /* AppDelegate.swift in Sources */,
 				0DFAA099259A151B00EC54BE /* WeakRefVirtualProxy.swift in Sources */,
 				0DFAA09C259A151B00EC54BE /* FeedViewAdapter.swift in Sources */,
