@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     }()
     
-    private lazy var store: FeedStore & FeedImageDataStore = {
+    private lazy var store: FeedStore & FeedImageDataStore & StoreScheduler & Sendable = {
         do {
             return try CoreDataFeedStore(storeURL: NSPersistentContainer
                                     .defaultDirectoryURL()
@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private lazy var navigationController = UINavigationController(rootViewController: FeedUIComposer.feedComposedWith(feedLoader: makeRemoteFeedLoaderWithLocalFallback, imageLoader: makeLocalImageLoaderWithRemoteFallback, selection: showComments))
     
-    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
+    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore & StoreScheduler & Sendable) {
         self.init()
         self.httpClient = httpClient
         self.store = store
@@ -133,52 +133,62 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         })
     }
     
+    private func loadLocalImageWithRemoteFallback(url: URL) async throws -> Data {
+        do {
+            return try await loadLocalImage(url: url)
+        } catch {
+            return try await loadAndCacheRemoteImage(url: url)
+        }
+    }
+    
+    private func loadLocalImage(url: URL) async throws -> Data {
+        try await store.schedule { [store] in
+            let localImageLoader = LocalFeedImageDataLoader(store: store)
+            let imageData = try localImageLoader.loadImageData(from: url)
+            return imageData
+        }
+    }
+    
+    private func loadAndCacheRemoteImage(url: URL) async throws -> Data {
+        let (data, response) = try await httpClient.get(from: url)
+        let imageData = try FeedImageDataMapper.map(data, from: response)
+        await store.schedule { [store] in
+            let localImageLoader = LocalFeedImageDataLoader(store: store)
+            try? localImageLoader.save(data, for: url)
+        }
+        return imageData
+    }
+
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
-        let localImageLoader = LocalFeedImageDataLoader(store: store)
-        
-        return localImageLoader
-            .loadImageDataPublisher(from: url)
-//            .logCacheMisses(url: url, logger: logger)
-            .fallback(to: { [httpClient, scheduler] in
-                httpClient.getPublisher(url: url)
-//                    .logErrors(url: url, logger: logger)
-//                    .logTimeElapsed(url: url, logger: logger)
-                    .tryMap(FeedImageDataMapper.map)
-                    .receive(on: scheduler)
-                    .caching(to: localImageLoader, using: url)
-                    .eraseToAnyPublisher()
-            }).subscribe(on: scheduler)
-            .eraseToAnyPublisher()
+        return Deferred {
+            Future { completion in
+                Task.immediate {
+                    do {
+                        let image = try await self.loadLocalImageWithRemoteFallback(url: url)
+                        completion(.success(image))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }
-/*
-extension Publisher {
-    func logCacheMisses(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
-        return handleEvents(receiveCompletion: { result in
-            if case .failure = result {
-                logger.trace("Cache miss for url: \(url)")
-            }
-        }).eraseToAnyPublisher()
-    }
-    
-    func logErrors(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
-        return handleEvents(receiveCompletion: { result in
-            if case let .failure(error) = result {
-                logger.error("🐞 Failed to load url: \(url) with error: \(error.localizedDescription)")
-            }
-        }).eraseToAnyPublisher()
-    }
-    
-    func logTimeElapsed(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
-        var startTime = CACurrentMediaTime()
-        
-        return handleEvents(receiveSubscription: {_ in
-            startTime = CACurrentMediaTime()
-            logger.trace("Started loading url: \(url)")
-        }, receiveCompletion: { result in
-            let elapsed = CACurrentMediaTime() - startTime
-            logger.trace("Finished loading url: \(url) in \(elapsed) seconds")
-        }).eraseToAnyPublisher()
+
+protocol StoreScheduler {
+    @MainActor
+    func schedule<T>(_ action: @escaping @Sendable () throws -> T) async rethrows -> T
+}
+
+extension CoreDataFeedStore: StoreScheduler {
+    @MainActor
+    func schedule<T>(_ action: @escaping @Sendable () throws -> T) async rethrows -> T {
+        if contextQueue == .main {
+            return try action()
+        } else {
+            return try await perform(action)
+        }
     }
 }
-*/
+

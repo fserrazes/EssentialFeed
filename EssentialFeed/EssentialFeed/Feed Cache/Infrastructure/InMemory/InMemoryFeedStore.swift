@@ -3,6 +3,7 @@
 
 import Foundation
 
+@MainActor
 public class InMemoryFeedStore {
     private(set) var feedCache: CachedFeed?
     private var feedImageDataCache = NSCache<NSURL, NSData>()
