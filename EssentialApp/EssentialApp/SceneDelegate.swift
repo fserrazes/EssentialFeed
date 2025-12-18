@@ -45,7 +45,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         LocalFeedLoader(store: store, currentDate: Date.init)
     }()
     
-    private lazy var navigationController = UINavigationController(rootViewController: FeedUIComposer.feedComposedWith(feedLoader: makeRemoteFeedLoaderWithLocalFallback, imageLoader: makeLocalImageLoaderWithRemoteFallback, selection: showComments))
+    private lazy var navigationController = UINavigationController(
+        rootViewController: FeedUIComposer.feedComposedWith(
+            feedLoader: makeRemoteFeedLoaderWithLocalFallback,
+            imageLoader: loadLocalImageWithRemoteFallback,
+            selection: showComments)
+    )
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore & StoreScheduler & Sendable) {
         self.init()
@@ -157,22 +162,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             try? localImageLoader.save(data, for: url)
         }
         return imageData
-    }
-
-    private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
-        return Deferred {
-            Future { completion in
-                Task.immediate {
-                    do {
-                        let image = try await self.loadLocalImageWithRemoteFallback(url: url)
-                        completion(.success(image))
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-            }
-        }
-        .eraseToAnyPublisher()
     }
 }
 

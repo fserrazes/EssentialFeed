@@ -13,10 +13,11 @@ public final class FeedUIComposer {
     
     private typealias FeedPresentationAdapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
     
-    public static func feedComposedWith(feedLoader: @MainActor @escaping () -> AnyPublisher<Paginated<FeedImage>, Error>,
-                                        imageLoader: @MainActor @escaping (URL) -> FeedImageDataLoader.Publisher,
-                                        selection: @MainActor @escaping (FeedImage) -> Void = { _ in }) -> ListViewController {
-        
+    public static func feedComposedWith(
+        feedLoader: @MainActor @escaping () -> AnyPublisher<Paginated<FeedImage>, Error>,
+        imageLoader: @MainActor @escaping (URL) async throws -> Data,
+        selection: @MainActor @escaping (FeedImage) -> Void = { _ in }
+    ) -> ListViewController {
         let presentationAdapter = FeedPresentationAdapter(loader: feedLoader)
         let feedController = makeFeedViewController(title: FeedPresenter.title)
         feedController.onRefresh = presentationAdapter.loadResource
