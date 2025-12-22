@@ -19,10 +19,6 @@ extension UIView {
         }
     }
     
-    private var shimmerAnimationKey: String {
-        return "shimmer"
-    }
-    
     private func startShimmering() {
         layer.mask = ShimmeringLayer(size: bounds.size)
     }
