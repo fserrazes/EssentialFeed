@@ -14,7 +14,7 @@ final class ImageCommentsMapperTests: XCTestCase {
         
         try samples.forEach { code in
             XCTAssertThrowsError(
-                try ImageCommentsMapper.map(json, HTTPURLResponse(statusCode: code))
+                try ImageCommentsMapper.map(json, from: HTTPURLResponse(statusCode: code))
             )
         }
     }
@@ -25,7 +25,7 @@ final class ImageCommentsMapperTests: XCTestCase {
         
         try samples.forEach { code in
             XCTAssertThrowsError(
-                try ImageCommentsMapper.map(invalidJSON, HTTPURLResponse(statusCode: code))
+                try ImageCommentsMapper.map(invalidJSON, from: HTTPURLResponse(statusCode: code))
             )
         }
     }
@@ -35,7 +35,7 @@ final class ImageCommentsMapperTests: XCTestCase {
         let samples = [200, 201, 250, 299]
 
         try samples.forEach { code in
-            let result = try ImageCommentsMapper.map(emptyListJSON, HTTPURLResponse(statusCode: code))
+            let result = try ImageCommentsMapper.map(emptyListJSON, from: HTTPURLResponse(statusCode: code))
             XCTAssertEqual(result, [])
         }
     }
@@ -57,7 +57,7 @@ final class ImageCommentsMapperTests: XCTestCase {
         let samples = [200, 201, 250, 299]
 
         try samples.forEach { code in
-            let result = try ImageCommentsMapper.map(json, HTTPURLResponse(statusCode: code))
+            let result = try ImageCommentsMapper.map(json, from: HTTPURLResponse(statusCode: code))
             XCTAssertEqual(result, [item1.model, item2.model])
         }
     }
