@@ -6,7 +6,7 @@ import XCTest
 import EssentialFeed
 
 @MainActor
-final class CoreDataFeedImageDataStoreTests: XCTestCase, FeedImageDataStoreSpecs {
+class CoreDataFeedImageDataStoreTests: XCTestCase, FeedImageDataStoreSpecs {
     func test_retrieveImageData_deliversNotFoundWhenEmpty() async throws {
         try await makeSUT { sut, imageDataURL in
             assertThatRetrieveImageDataDeliversNotFoundOnEmptyCache(on: sut, imageDataURL: imageDataURL)
