@@ -13,8 +13,7 @@ class URLProtocolStub: URLProtocol {
         let shouldComplete: Bool
         let onStartLoading: @MainActor (URLRequest) -> Void
     }
-    
-    private static let queue = DispatchQueue(label: "URLProtocolStub.queue")
+
     private static let stub = Mutex<Stub?>(nil)
     
     static func stub(data: Data?, response: URLResponse?, error: Error?) {
