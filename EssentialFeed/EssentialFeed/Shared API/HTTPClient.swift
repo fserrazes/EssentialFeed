@@ -4,10 +4,6 @@
 
 import Foundation
 
-public protocol HTTPClientTask {
-     func cancel()
-}
-
 public protocol HTTPClient {
     func get(from url: URL) async throws -> (Data, HTTPURLResponse)
 }

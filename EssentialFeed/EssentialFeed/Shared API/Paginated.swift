@@ -5,8 +5,6 @@
 import Foundation
 
 public struct Paginated<Item: Sendable>: Sendable {
-    public typealias LoadMoreCompletion = (Result<Self, Error>) -> Void
-    
     public let items: [Item]
     public let loadMore: (@Sendable () async throws -> Self)?
     
