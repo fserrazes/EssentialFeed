@@ -9,7 +9,6 @@ extension CoreDataFeedStore: FeedImageDataStore {
         try ManagedFeedImage.first(with: url, in: context)
             .map { $0.data = data }
             .map(context.save)
-        
     }
     
     public func retrieve(dataForURL url: URL) throws -> Data? {

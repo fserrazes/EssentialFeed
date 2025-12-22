@@ -6,9 +6,10 @@ import Foundation
 import CoreData
 
 public final class CoreDataFeedStore : Sendable {
+    private static let modelName = "FeedStore"
     @MainActor
     private static let model = NSManagedObjectModel.with(name: modelName, in: Bundle(for: CoreDataFeedStore.self))
-    private static let modelName = "FeedStore"
+    
     
     private let container: NSPersistentContainer
     let context: NSManagedObjectContext
