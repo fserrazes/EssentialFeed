@@ -9,9 +9,9 @@
 
 | Module           | Tests | Duration |Lines | Coverage |
 |------------------|-------|----------|------|----------|
-| EssentialApp     |  52   | 1.147 s  | 637  | 87,3%    |
-| EssentialFeed    |  101  | 0.305 s  | 419  | 94,7%    |
-| EssentialFeediOS |   7   | 5.504 s  | 460  | 78,0%    |
+| EssentialApp     |  56   | 1.147 s  | 430  | 97,7%    |
+| EssentialFeed    |  101  | 0.305 s  | 388  | 98,7%    |
+| EssentialFeediOS |   7   | 5.504 s  | 467  | 96,6%    |
 
 ## Architecture
 
